@@ -6,6 +6,9 @@
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
     <link href="./style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet" />
     <title>Les Petits Plats</title>
   </head>
   <body>
@@ -15,75 +18,109 @@
     </header>
     <main id="main">
       <section class="search-bar">
-        <input type="text" id="search" name="search" placeholder="Rechercher une recette" />
+        <input type="search" id="search" name="search" placeholder="Rechercher une recette" />
         <i class="fa-solid fa-magnifying-glass"></i>
       </section>
-      <section class="filtres">
-        <div class="ingredients search-filter">
-          <p>Ingredients</p>
-          <i class="fa-solid fa-chevron-down"></i>
+
+      <section class="research-tag">
+        <div class="ingredients-tag">
+          <p>Coco</p>
+          <i class="fa-regular fa-circle-xmark"></i>
         </div>
-        <div class="appareils search-filter">
-          <p>Appareils</p>
-          <i class="fa-solid fa-chevron-down"></i>
+        <div class="appareils-tag">
+          <p>Mixeur</p>
+          <i class="fa-regular fa-circle-xmark"></i>
         </div>
-        <div class="ustensils search-filter">
-          <p>Ustensils</p>
-          <i class="fa-solid fa-chevron-down"></i>
+        <div class="ustensils-tag">
+          <p>cuillère</p>
+          <i class="fa-regular fa-circle-xmark"></i>
         </div>
       </section>
 
-      <section class="recipes-gallery">
-        <!-- <artcile class="recipe">
-          <div class="img-container"></div>
-          <div class="recipe-main-information">
-            <h2 class="title">titre de la recette</h2>
-            <p class="recipe-duration"><i class="fa-regular fa-clock"></i>10 min</p>
+      <section class="filtres">
+        <div class="ingredients">
+          <div class="search-filter">
+            <input type="search" class="search-filter-input" id="search-filter-ingredients" name="search-filter-ingredient" placeholder="Ingredients" />
+            <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <aside class="recipe-details">
-            <ul class="ingredients-list">
-              <li><strong>ingredient 1:</strong> 200ML</li>
-              <li><strong>ingredient 2:</strong> 3cs</li>
-              <li><strong>ingredient 3:</strong> 3</li>
+          <div class="test suggestion-inactive">
+            <ul class="suggestion suggestion-ingredients">
+              <li>Ingredient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Moutarde de Dijon</li>
+              <li>Moutarde de Dijon</li>
+              <li>Moutarde de Dijon</li>
             </ul>
-            <p class="recipe-description">Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée</p>
-          </aside>
-        </artcile>
-        <artcile class="recipe">
-          <div class="img-container"></div>
-          <div class="recipe-main-information">
-            <h2 class="title">titre de la recette</h2>
-            <p class="recipe-duration"><i class="fa-regular fa-clock"></i>10 min</p>
           </div>
-          <aside class="recipe-details">
-            <ul class="ingredients-list">
-              <li><strong>ingredient 1:</strong> 200ML</li>
-              <li><strong>ingredient 2:</strong> 3cs</li>
-              <li><strong>ingredient 3:</strong> 3</li>
-            </ul>
-            <p class="recipe-description">Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée</p>
-          </aside>
-        </artcile>
-        <artcile class="recipe">
-          <div class="img-container"></div>
-          <div class="recipe-main-information">
-            <h2 class="title">titre de la recette</h2>
-            <p class="recipe-duration"><i class="fa-regular fa-clock"></i>10 min</p>
+        </div>
+        <div class="appareils">
+          <div class="search-filter">
+            <input type="search" class="search-filter-input" id="search-filter-appareils" name="search-filter-appareils" placeholder="Appareils" />
+            <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <aside class="recipe-details">
-            <ul class="ingredients-list">
-              <li><strong>ingredient 1:</strong> 200ML</li>
-              <li><strong>ingredient 2:</strong> 3cs</li>
-              <li><strong>ingredient 3:</strong> 3</li>
+          <div class="test suggestion-inactive">
+            <ul class="suggestion suggestion-appareils">
+              <li>Ingredient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Moutarde de Dijon</li>
+              <li>Moutarde de Dijon</li>
+              <li>Moutarde de Dijon</li>
             </ul>
-            <p class="recipe-description">Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée</p>
-          </aside>
-        </artcile> -->
+          </div>
+        </div>
+        <div class="ustensils">
+          <div class="search-filter">
+            <input type="search" class="search-filter-input" id="search-filter-ustensils" name="search-filter-ustensils" placeholder="Ustensils" />
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="test suggestion-inactive">
+            <ul class="suggestion suggestion-ustensils">
+              <li>Ingredient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Ingrédient</li>
+              <li>Moutarde de Dijon</li>
+              <li>Moutarde de Dijon</li>
+              <li>Moutarde de Dijon</li>
+            </ul>
+          </div>
+        </div>
       </section>
+
+      <section class="recipes-gallery"></section>
     </main>
     <script src="https://kit.fontawesome.com/59d113e09e.js" crossorigin="anonymous"></script>
     <script src="./script/factory/recipe.js"></script>
     <script src="./data/recipes.js"></script>
+    <script src="./script/utils/researchLayout.js"></script>
     <script src="./script/page/index.js"></script>
   </body>
 </html>
