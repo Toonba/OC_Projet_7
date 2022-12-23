@@ -1,8 +1,3 @@
-// async function getRecipes() {
-//   const response = await fetch('./data/recipes.json')
-//   return response.json()
-// }
-
 const recipesSection = document.getElementsByClassName('recipes-gallery')
 function displayRecipes(recipes) {
   recipes.forEach((recipe) => {
@@ -13,7 +8,6 @@ function displayRecipes(recipes) {
 }
 
 function init() {
-  console.log(recipesSection)
   displayRecipes(recipes)
 }
 
