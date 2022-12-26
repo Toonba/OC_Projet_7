@@ -12,6 +12,7 @@ const suggestionListIngredient = ingredientsDiv[0].querySelectorAll('li')
 const suggestionListAppareils = appareilsDiv[0].querySelectorAll('li')
 const suggestionListUstensils = ustensilsDiv[0].querySelectorAll('li')
 
+console.log(suggestionListIngredient.length)
 
 class SearchProperties {
   constructor(category, suggestionDiv, input, suggestionList, tagClass) {
@@ -81,4 +82,3 @@ mySearchProperties.forEach((element) => {
 //     element.suggestionDiv.classList.add('suggestion-inactive')
 //   })
 // })
-
