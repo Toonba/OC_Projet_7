@@ -1,7 +1,7 @@
 const recipesSection = document.getElementsByClassName('recipes-gallery')
-function displayRecipes(recipes) {
-  recipes.forEach((recipe) => {
-    const recipeTemplate = recipeFactory(recipe)
+function displayRecipes(array) {
+  array.forEach((element) => {
+    const recipeTemplate = recipeFactory(element)
     const recipeCardDOM = recipeTemplate.getRecipeCardDOM()
     recipesSection[0].appendChild(recipeCardDOM)
   })

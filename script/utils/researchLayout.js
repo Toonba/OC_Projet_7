@@ -11,8 +11,35 @@ const tagCloseButton = Array.from(document.querySelectorAll('.fa-circle-xmark'))
 const suggestionListIngredient = ingredientsDiv[0].querySelectorAll('li')
 const suggestionListAppareils = appareilsDiv[0].querySelectorAll('li')
 const suggestionListUstensils = ustensilsDiv[0].querySelectorAll('li')
+const testUlDivIngredient = document.getElementsByClassName('suggestion-ingredients')
+const testUlDivAppareils = document.getElementsByClassName('suggestion-appareils')
+const testUlDivUstensils = document.getElementsByClassName('suggestion-ustensils')
 
-console.log(suggestionListIngredient.length)
+// IL VA FALLOIR REVOIR CETTE PARTIE MAIS 9A MARCHE POUR CREER LES TAG 
+testUlDivIngredient[0].addEventListener
+;['click', 'keydown'].forEach((action) => {
+  testUlDivIngredient[0].addEventListener(action, (e) => {
+    if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
+      createResearchTag('ingredients-tag', e.target.textContent)
+    }
+  })
+})
+testUlDivAppareils[0].addEventListener
+;['click', 'keydown'].forEach((action) => {
+  testUlDivAppareils[0].addEventListener(action, (e) => {
+    if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
+      createResearchTag('appareils-tag', e.target.textContent)
+    }
+  })
+})
+testUlDivUstensils[0].addEventListener
+;['click', 'keydown'].forEach((action) => {
+  testUlDivUstensils[0].addEventListener(action, (e) => {
+    if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
+      createResearchTag('ustensils-tag', e.target.textContent)
+    }
+  })
+})
 
 class SearchProperties {
   constructor(category, suggestionDiv, input, suggestionList, tagClass) {
@@ -54,17 +81,18 @@ researchTagSection[0].addEventListener('click', (e) => {
 })
 
 // Event to create tage when user click/press Enter on one suggestion
-mySearchProperties.forEach((element) => {
-  element.suggestionList.forEach((suggestion) => {
-    ;['click', 'keydown'].forEach((action) => {
-      suggestion.addEventListener(action, (e) => {
-        if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-          createResearchTag(element.tagClass, suggestion.textContent)
-        }
-      })
-    })
-  })
-})
+// mySearchProperties.forEach((element) => {
+//   console.log(element.suggestionList)
+//   element.suggestionList.forEach((suggestion) => {
+//     ;['click', 'keydown'].forEach((action) => {
+//       suggestion.addEventListener(action, (e) => {
+//         if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
+//           createResearchTag(element.tagClass, suggestion.textContent)
+//         }
+//       })
+//     })
+//   })
+// })
 
 //Need to add class 'search-filter-box' to div.ingredients, div.appareils, div.ustensils
 // suggestion et suggestion-ingredients, appareils, ustensils doivent doivent avoir un display sur block
