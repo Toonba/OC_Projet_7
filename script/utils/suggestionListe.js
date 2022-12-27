@@ -2,9 +2,12 @@
 const ingredientsSuggestion = document.getElementsByClassName('suggestion-ingredients')
 const appareilsSuggestion = document.getElementsByClassName('suggestion-appareils')
 const ustensilsSuggestion = document.getElementsByClassName('suggestion-ustensils')
+const researchTagSection = document.getElementsByClassName('research-tag')
 
+console.log(researchTagSection[0].children)
 // Get List of Ingredient
 
+// function that give the list of unique ingredient within the array
 function getListIngredients(array) {
   const listAllIngredients = []
   let listUniqueIngredients = []
@@ -24,6 +27,7 @@ function getListIngredients(array) {
   return listUniqueIngredients
 }
 
+// function that give the list of unique appareils within the array
 function getListAppareils(array) {
   const listAllAppareils = []
   let listUniqueAppareils = []
@@ -41,6 +45,7 @@ function getListAppareils(array) {
   return listUniqueAppareils
 }
 
+// function that give the list of unique ustensils within the array
 function getListUstensils(array) {
   const listAllUstensils = []
   let listUniqueUstensils = []

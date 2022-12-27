@@ -1,5 +1,5 @@
 // DOM
-const researchTagSection = document.getElementsByClassName('research-tag')
+
 const ingredientsDiv = document.getElementsByClassName('ingredients')
 const appareilsDiv = document.getElementsByClassName('appareils')
 const ustensilsDiv = document.getElementsByClassName('ustensils')
@@ -15,32 +15,7 @@ const testUlDivIngredient = document.getElementsByClassName('suggestion-ingredie
 const testUlDivAppareils = document.getElementsByClassName('suggestion-appareils')
 const testUlDivUstensils = document.getElementsByClassName('suggestion-ustensils')
 
-// IL VA FALLOIR REVOIR CETTE PARTIE MAIS 9A MARCHE POUR CREER LES TAG 
-testUlDivIngredient[0].addEventListener
-;['click', 'keydown'].forEach((action) => {
-  testUlDivIngredient[0].addEventListener(action, (e) => {
-    if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-      createResearchTag('ingredients-tag', e.target.textContent)
-    }
-  })
-})
-testUlDivAppareils[0].addEventListener
-;['click', 'keydown'].forEach((action) => {
-  testUlDivAppareils[0].addEventListener(action, (e) => {
-    if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-      createResearchTag('appareils-tag', e.target.textContent)
-    }
-  })
-})
-testUlDivUstensils[0].addEventListener
-;['click', 'keydown'].forEach((action) => {
-  testUlDivUstensils[0].addEventListener(action, (e) => {
-    if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-      createResearchTag('ustensils-tag', e.target.textContent)
-    }
-  })
-})
-
+// class to gather multiple information about advanced search input 
 class SearchProperties {
   constructor(category, suggestionDiv, input, suggestionList, tagClass) {
     this.category = category
@@ -80,33 +55,44 @@ researchTagSection[0].addEventListener('click', (e) => {
   }
 })
 
-// Event to create tage when user click/press Enter on one suggestion
-// mySearchProperties.forEach((element) => {
-//   console.log(element.suggestionList)
-//   element.suggestionList.forEach((suggestion) => {
-//     ;['click', 'keydown'].forEach((action) => {
-//       suggestion.addEventListener(action, (e) => {
-//         if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-//           createResearchTag(element.tagClass, suggestion.textContent)
-//         }
-//       })
-//     })
-//   })
-// })
+// Event to create tag when user click on one item of the suggestion list
+;['click', 'keydown'].forEach((action) => {
+  ;[testUlDivIngredient[0], testUlDivAppareils[0], testUlDivUstensils[0]].forEach((suggestionDiv) => {
+    suggestionDiv.addEventListener(action, (e) => {
+      if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
+        if (suggestionDiv === testUlDivIngredient[0]) {
+          createResearchTag('ingredients-tag', e.target.textContent)
+          e.target.style.display = 'none'
+        }
+        if (suggestionDiv === testUlDivAppareils[0]) {
+          createResearchTag('appareils-tag', e.target.textContent)
+          e.target.style.display = 'none'
+        }
+        if (suggestionDiv === testUlDivUstensils[0]) {
+          createResearchTag('ustensils-tag', e.target.textContent)
+          e.target.style.display = 'none'
+        }
+      }
+    })
+  })
+})
 
-//Need to add class 'search-filter-box' to div.ingredients, div.appareils, div.ustensils
-// suggestion et suggestion-ingredients, appareils, ustensils doivent doivent avoir un display sur block
+// Event to display suggestion when user focus one advanced search input 
 mySearchProperties.forEach((element) => {
   element.input.addEventListener('focus', (e) => {
     element.category.classList.add('search-filter-box')
+    element.category.children[0].children[1].classList.add('fa-chevron-down-rotate')
     element.suggestionDiv.classList.add('suggestion-active')
     element.suggestionDiv.classList.remove('suggestion-inactive')
   })
 })
-// mySearchProperties.forEach((element) => {
-//   element.input.addEventListener('focusout', (e) => {
-//     element.category.classList.remove('search-filter-box')
-//     element.suggestionDiv.classList.remove('suggestion-active')
-//     element.suggestionDiv.classList.add('suggestion-inactive')
-//   })
-// })
+
+// Event to hide suggestion when user click on the respective chevron
+mySearchProperties.forEach((element) => {
+  element.category.children[0].children[1].addEventListener('click', (e) => {
+    element.category.classList.remove('search-filter-box')
+    element.category.children[0].children[1].classList.remove('fa-chevron-down-rotate')
+    element.suggestionDiv.classList.remove('suggestion-active')
+    element.suggestionDiv.classList.add('suggestion-inactive')
+  })
+})
