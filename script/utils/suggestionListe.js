@@ -4,7 +4,6 @@ const appareilsSuggestion = document.getElementsByClassName('suggestion-appareil
 const ustensilsSuggestion = document.getElementsByClassName('suggestion-ustensils')
 const researchTagSection = document.getElementsByClassName('research-tag')
 
-console.log(researchTagSection[0].children)
 // Get List of Ingredient
 
 // function that give the list of unique ingredient within the array
@@ -13,7 +12,7 @@ function getListIngredients(array) {
   let listUniqueIngredients = []
   array.forEach((element) => {
     element.ingredients.forEach((item) => {
-      listAllIngredients.push(item.ingredient)
+      listAllIngredients.push(item.ingredient.toLowerCase())
     })
   })
   listUniqueIngredients = listAllIngredients.filter((element, position) => listAllIngredients.indexOf(element) === position)

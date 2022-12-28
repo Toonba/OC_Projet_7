@@ -15,7 +15,7 @@ const testUlDivIngredient = document.getElementsByClassName('suggestion-ingredie
 const testUlDivAppareils = document.getElementsByClassName('suggestion-appareils')
 const testUlDivUstensils = document.getElementsByClassName('suggestion-ustensils')
 
-// class to gather multiple information about advanced search input 
+// class to gather multiple information about advanced search input
 class SearchProperties {
   constructor(category, suggestionDiv, input, suggestionList, tagClass) {
     this.category = category
@@ -30,6 +30,7 @@ const appareilsProperties = new SearchProperties(appareilsDiv[0], suggestionDivI
 const ustensilsProperties = new SearchProperties(ustensilsDiv[0], suggestionDivIngredient[2], ustensilsInput, suggestionListUstensils, 'ustensils-tag')
 let mySearchProperties = [ingredientsProperties, appareilsProperties, ustensilsProperties]
 
+let currentTag = []
 // function to create research tag element
 function createResearchTag(tagClass, suggestion) {
   const tag = document.createElement('div')
@@ -42,10 +43,13 @@ function createResearchTag(tagClass, suggestion) {
   researchTagSection[0].appendChild(tag)
   tag.appendChild(tagText)
   tag.appendChild(tagClose)
+  currentTag.push(suggestion)
 }
 // function to delete tag
 function deleteTag(closeButton) {
   const tag = closeButton.parentNode
+  const tagText = tag.children[0].textContent
+  currentTag.splice(currentTag.indexOf(tagText), 1)
   tag.remove()
 }
 // Event to delete tag
@@ -54,30 +58,34 @@ researchTagSection[0].addEventListener('click', (e) => {
     deleteTag(e.target)
   }
 })
-
 // Event to create tag when user click on one item of the suggestion list
 ;['click', 'keydown'].forEach((action) => {
   ;[testUlDivIngredient[0], testUlDivAppareils[0], testUlDivUstensils[0]].forEach((suggestionDiv) => {
     suggestionDiv.addEventListener(action, (e) => {
       if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-        if (suggestionDiv === testUlDivIngredient[0]) {
-          createResearchTag('ingredients-tag', e.target.textContent)
-          e.target.style.display = 'none'
-        }
-        if (suggestionDiv === testUlDivAppareils[0]) {
-          createResearchTag('appareils-tag', e.target.textContent)
-          e.target.style.display = 'none'
-        }
-        if (suggestionDiv === testUlDivUstensils[0]) {
-          createResearchTag('ustensils-tag', e.target.textContent)
-          e.target.style.display = 'none'
+        if (!currentTag.includes(e.target.textContent)) {
+          if (suggestionDiv === testUlDivIngredient[0]) {
+            createResearchTag('ingredients-tag', e.target.textContent)
+            advancedFilter(e.target)
+            e.target.style.display = 'none'
+          }
+          if (suggestionDiv === testUlDivAppareils[0]) {
+            createResearchTag('appareils-tag', e.target.textContent)
+            advancedFilter(e.target)
+            e.target.style.display = 'none'
+          }
+          if (suggestionDiv === testUlDivUstensils[0]) {
+            createResearchTag('ustensils-tag', e.target.textContent)
+            advancedFilter(e.target)
+            e.target.style.display = 'none'
+          }
         }
       }
     })
   })
 })
 
-// Event to display suggestion when user focus one advanced search input 
+// Event to display suggestion when user focus one advanced search input
 mySearchProperties.forEach((element) => {
   element.input.addEventListener('focus', (e) => {
     element.category.classList.add('search-filter-box')
