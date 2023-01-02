@@ -7,61 +7,74 @@ const researchTagSection = document.getElementsByClassName('research-tag')
 // Get List of Ingredient
 
 // function that give the list of unique ingredient within the array
+let listUniqueIngredients = []
 function getListIngredients(array) {
   const listAllIngredients = []
-  let listUniqueIngredients = []
+  listUniqueIngredients = []
   array.forEach((element) => {
     element.ingredients.forEach((item) => {
       listAllIngredients.push(item.ingredient.toLowerCase())
     })
   })
   listUniqueIngredients = listAllIngredients.filter((element, position) => listAllIngredients.indexOf(element) === position)
+  displayIngredientsSuggestion(listUniqueIngredients)
+  return listUniqueIngredients
+}
+
+// function that give the list of unique appareils within the array
+let listUniqueAppareils = []
+function getListAppareils(array) {
+  const listAllAppareils = []
+  array.forEach((element) => {
+    listAllAppareils.push(element.appliance.toLowerCase())
+  })
+  listUniqueAppareils = listAllAppareils.filter((element, position) => listAllAppareils.indexOf(element) === position)
+  displayAppareilsSuggestion(listUniqueAppareils)
+  return listUniqueAppareils
+}
+
+// function that give the list of unique ustensils within the array
+let listUniqueUstensils = []
+function getListUstensils(array) {
+  const listAllUstensils = []
+  array.forEach((element) => {
+    element.ustensils.forEach((item) => {
+      listAllUstensils.push(item.toLowerCase())
+    })
+  })
+  listUniqueUstensils = listAllUstensils.filter((element, position) => listAllUstensils.indexOf(element) === position)
+  displayUstensilsSuggestion(listUniqueUstensils)
+  return listUniqueUstensils
+}
+
+function displayIngredientsSuggestion(array) {
   ingredientsSuggestion[0].innerHTML = ''
-  listUniqueIngredients.forEach((element) => {
+  array.forEach((element) => {
     const newItem = document.createElement('li')
     newItem.setAttribute('tabindex', '0')
     newItem.textContent = element
     ingredientsSuggestion[0].appendChild(newItem)
   })
-  return listUniqueIngredients
 }
 
-// function that give the list of unique appareils within the array
-function getListAppareils(array) {
-  const listAllAppareils = []
-  let listUniqueAppareils = []
-  array.forEach((element) => {
-    listAllAppareils.push(element.appliance)
-  })
-  listUniqueAppareils = listAllAppareils.filter((element, position) => listAllAppareils.indexOf(element) === position)
+function displayAppareilsSuggestion(array) {
   appareilsSuggestion[0].innerHTML = ''
-  listUniqueAppareils.forEach((element) => {
+  array.forEach((element) => {
     const newItem = document.createElement('li')
     newItem.setAttribute('tabindex', '0')
     newItem.textContent = element
     appareilsSuggestion[0].appendChild(newItem)
   })
-  return listUniqueAppareils
 }
 
-// function that give the list of unique ustensils within the array
-function getListUstensils(array) {
-  const listAllUstensils = []
-  let listUniqueUstensils = []
-  array.forEach((element) => {
-    element.ustensils.forEach((item) => {
-      listAllUstensils.push(item)
-    })
-  })
-  listUniqueUstensils = listAllUstensils.filter((element, position) => listAllUstensils.indexOf(element) === position)
+function displayUstensilsSuggestion(array) {
   ustensilsSuggestion[0].innerHTML = ''
-  listUniqueUstensils.forEach((element) => {
+  array.forEach((element) => {
     const newItem = document.createElement('li')
     newItem.setAttribute('tabindex', '0')
     newItem.textContent = element
     ustensilsSuggestion[0].appendChild(newItem)
   })
-  return listUniqueUstensils
 }
 
 getListIngredients(recipes)

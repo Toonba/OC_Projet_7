@@ -1,26 +1,28 @@
 const mainSearchInput = document.getElementById('search')
+const ingredientsSearchInput = document.getElementById('search-filter-ingredients')
+const appareilsSearchInput = document.getElementById('search-filter-appareils')
+const ustensilsSearchInput = document.getElementById('search-filter-ustensils')
+
+const myAdvancedSearchInput = [ingredientsSearchInput, appareilsSearchInput, ustensilsSearchInput]
 
 let currentRecipes = recipes
 // Function that display recipes matching user input (if user input.length >3, else he display all recipes)) + modify the list of suggestion for each advanced search so that it suggest only ingredients, appareils or ustensils that are within the remaining recipes folowing main search.
-function mainSearch(searchInputValue) {
+function mainSearch(searchInput) {
   let currentSearch = ''
-  if (searchInputValue.length < 3) {
+  if (searchInput.value.length < 3) {
     currentRecipes = recipes
   }
-  if (searchInputValue.length >= 3) {
+  if (searchInput.value.length >= 3) {
     currentRecipes = []
-    currentSearch = searchInputValue.toLowerCase()
-    recipes.forEach((recipe) => {
-      if (
-        recipe.name.toLowerCase().includes(currentSearch) ||
-        recipe.description.toLowerCase().includes(currentSearch) ||
-        recipe.ingredients.forEach((item) => {
+    currentSearch = searchInput.value.toLowerCase()
+    currentRecipes = recipes.filter(
+      (element) =>
+        element.name.toLowerCase().includes(currentSearch) ||
+        element.description.toLowerCase().includes(currentSearch) ||
+        element.ingredients.forEach((item) => {
           item.ingredient.toLowerCase().includes(currentSearch)
         })
-      ) {
-        currentRecipes.push(recipe)
-      }
-    })
+    )
   }
   recipesSection[0].innerHTML = ''
   displayRecipes(currentRecipes)
@@ -30,13 +32,35 @@ function mainSearch(searchInputValue) {
   return currentRecipes
 }
 
+function advancedSearch(searchInput) {
+  const currentAdvancedSearch = searchInput.value.toLowerCase()
+  let currentSuggestion = []
+  if (searchInput === ingredientsSearchInput) {
+    currentSuggestion = listUniqueIngredients.filter((element) => element.toLowerCase().includes(currentAdvancedSearch))
+    displayIngredientsSuggestion(currentSuggestion)
+  } else if (searchInput === appareilsSearchInput) {
+    currentSuggestion = listUniqueAppareils.filter((element) => element.toLowerCase().includes(currentAdvancedSearch))
+    displayAppareilsSuggestion(currentSuggestion)
+  } else if (searchInput === ustensilsSearchInput) {
+    currentSuggestion = listUniqueUstensils.filter((element) => element.toLowerCase().includes(currentAdvancedSearch))
+    displayUstensilsSuggestion(currentSuggestion)
+  }
+}
+
 mainSearchInput.addEventListener('keyup', (e) => {
-  mainSearch(mainSearchInput.value)
+  mainSearch(mainSearchInput)
 })
 
+myAdvancedSearchInput.forEach((input) => {
+  input.addEventListener('keyup', (e) => {
+    advancedSearch(input)
+  })
+})
+
+let advancedRecipes = []
 function advancedFilter(suggestion) {
   let advancedSearch = ''
-  let advancedRecipes = []
+  advancedRecipes = []
   if (suggestion.parentNode.classList[1] === 'suggestion-ingredients') {
     currentRecipes.forEach((recipe) => {
       recipe.ingredients.forEach((element) => {

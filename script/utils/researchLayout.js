@@ -14,24 +14,26 @@ const suggestionListUstensils = ustensilsDiv[0].querySelectorAll('li')
 const testUlDivIngredient = document.getElementsByClassName('suggestion-ingredients')
 const testUlDivAppareils = document.getElementsByClassName('suggestion-appareils')
 const testUlDivUstensils = document.getElementsByClassName('suggestion-ustensils')
+const chevronDown = document.getElementsByClassName('fa-chevron-down')
 
 // class to gather multiple information about advanced search input
 class SearchProperties {
-  constructor(category, suggestionDiv, input, suggestionList, tagClass) {
+  constructor(category, suggestionDiv, input, suggestionList, tagClass, chevron) {
     this.category = category
     this.suggestionDiv = suggestionDiv
     this.input = input
     this.suggestionList = suggestionList
     this.tagClass = tagClass
+    this.chevron = chevron
   }
 }
-const ingredientsProperties = new SearchProperties(ingredientsDiv[0], suggestionDivIngredient[0], ingredientsInput, suggestionListIngredient, 'ingredients-tag')
-const appareilsProperties = new SearchProperties(appareilsDiv[0], suggestionDivIngredient[1], appareilsInput, suggestionListAppareils, 'appareils-tag')
-const ustensilsProperties = new SearchProperties(ustensilsDiv[0], suggestionDivIngredient[2], ustensilsInput, suggestionListUstensils, 'ustensils-tag')
+const ingredientsProperties = new SearchProperties(ingredientsDiv[0], suggestionDivIngredient[0], ingredientsInput, suggestionListIngredient, 'ingredients-tag', chevronDown[0])
+const appareilsProperties = new SearchProperties(appareilsDiv[0], suggestionDivIngredient[1], appareilsInput, suggestionListAppareils, 'appareils-tag', chevronDown[1])
+const ustensilsProperties = new SearchProperties(ustensilsDiv[0], suggestionDivIngredient[2], ustensilsInput, suggestionListUstensils, 'ustensils-tag', chevronDown[2])
 let mySearchProperties = [ingredientsProperties, appareilsProperties, ustensilsProperties]
 
 let currentTag = []
-// function to create research tag element
+// function to create research tag element and add tag.textcontent in an array (currentTag) that will allow no duplication of tag
 function createResearchTag(tagClass, suggestion) {
   const tag = document.createElement('div')
   tag.classList.add(tagClass)
@@ -45,10 +47,11 @@ function createResearchTag(tagClass, suggestion) {
   tag.appendChild(tagClose)
   currentTag.push(suggestion)
 }
-// function to delete tag
+// function to delete tag and delete tag.textcontent from array (currentTag)
 function deleteTag(closeButton) {
   const tag = closeButton.parentNode
   const tagText = tag.children[0].textContent
+  const recipeToDelete = []
   currentTag.splice(currentTag.indexOf(tagText), 1)
   tag.remove()
 }
@@ -88,19 +91,33 @@ researchTagSection[0].addEventListener('click', (e) => {
 // Event to display suggestion when user focus one advanced search input
 mySearchProperties.forEach((element) => {
   element.input.addEventListener('focus', (e) => {
-    element.category.classList.add('search-filter-box')
-    element.category.children[0].children[1].classList.add('fa-chevron-down-rotate')
-    element.suggestionDiv.classList.add('suggestion-active')
-    element.suggestionDiv.classList.remove('suggestion-inactive')
+    showSuggestion(element.category, element.suggestionDiv)
+  })
+  element.chevron.addEventListener('click', (e) => {
+    console.log(element.chevron)
+    console.log(element.category)
+    console.log(element.suggestionDiv)
+    showSuggestion(element.category, element.suggestionDiv)
   })
 })
 
 // Event to hide suggestion when user click on the respective chevron
 mySearchProperties.forEach((element) => {
-  element.category.children[0].children[1].addEventListener('click', (e) => {
-    element.category.classList.remove('search-filter-box')
-    element.category.children[0].children[1].classList.remove('fa-chevron-down-rotate')
-    element.suggestionDiv.classList.remove('suggestion-active')
-    element.suggestionDiv.classList.add('suggestion-inactive')
+  element.chevron.addEventListener('click', (e) => {
+    hideSuggestion(element.category, element.suggestionDiv)
   })
 })
+
+function showSuggestion(category, suggestionDiv) {
+  category.classList.add('search-filter-box')
+  category.children[0].children[1].classList.add('fa-chevron-down-rotate')
+  suggestionDiv.classList.add('suggestion-active')
+  suggestionDiv.classList.remove('suggestion-inactive')
+}
+
+function hideSuggestion(category, suggestionDiv) {
+  category.classList.remove('search-filter-box')
+  category.children[0].children[1].classList.remove('fa-chevron-down-rotate')
+  suggestionDiv.classList.remove('suggestion-active')
+  suggestionDiv.classList.add('suggestion-inactive')
+}
