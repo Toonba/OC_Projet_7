@@ -15,13 +15,9 @@ function mainSearch(searchInput) {
   if (searchInput.value.length >= 3) {
     currentRecipes = []
     currentSearch = searchInput.value.toLowerCase()
-    currentRecipes = recipes.filter(
-      (element) =>
-        element.name.toLowerCase().includes(currentSearch) ||
-        element.description.toLowerCase().includes(currentSearch) ||
-        element.ingredients.forEach((item) => {
-          item.ingredient.toLowerCase().includes(currentSearch)
-        })
+    currentRecipes = recipes.filter((element) =>
+      // element.name.toLowerCase().includes(currentSearch) || element.description.toLowerCase().includes(currentSearch) ||
+      element.ingredients.some((item) => item.ingredient.toLowerCase().includes(currentSearch))
     )
   }
   recipesSection[0].innerHTML = ''
@@ -59,31 +55,15 @@ myAdvancedSearchInput.forEach((input) => {
 
 let advancedRecipes = []
 function advancedFilter(suggestion) {
-  let advancedSearch = ''
   advancedRecipes = []
   if (suggestion.parentNode.classList[1] === 'suggestion-ingredients') {
-    currentRecipes.forEach((recipe) => {
-      recipe.ingredients.forEach((element) => {
-        if (element.ingredient.toLowerCase().includes(suggestion.textContent.toLowerCase())) {
-          advancedRecipes.push(recipe)
-        }
-      })
-    })
+    advancedRecipes = currentRecipes.filter((element) => element.ingredients.some((item) => item.ingredient.toLowerCase().includes(suggestion.textContent.toLowerCase())))
   } else if (suggestion.parentNode.classList[1] === 'suggestion-appareils') {
-    currentRecipes.forEach((recipe) => {
-      if (recipe.appliance.toLowerCase().includes(suggestion.textContent.toLowerCase())) {
-        advancedRecipes.push(recipe)
-      }
-    })
+    advancedRecipes = currentRecipes.filter((element) => element.appliance.toLowerCase().includes(suggestion.textContent.toLowerCase()))
   } else if (suggestion.parentNode.classList[1] === 'suggestion-ustensils') {
-    currentRecipes.forEach((recipe) => {
-      recipe.ustensils.forEach((item) => {
-        if (item.toLowerCase().includes(suggestion.textContent.toLowerCase())) {
-          advancedRecipes.push(recipe)
-        }
-      })
-    })
+    advancedRecipes = currentRecipes.filter((element) => element.ustensils.some((item) => item.toLowerCase().includes(suggestion.textContent.toLowerCase())))
   }
+  currentRecipes = advancedRecipes
   recipesSection[0].innerHTML = ''
   displayRecipes(advancedRecipes)
   getListIngredients(advancedRecipes)

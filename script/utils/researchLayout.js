@@ -45,7 +45,8 @@ function createResearchTag(tagClass, suggestion) {
   researchTagSection[0].appendChild(tag)
   tag.appendChild(tagText)
   tag.appendChild(tagClose)
-  currentTag.push(suggestion)
+  currentTag.push({ class: tagClass, text: suggestion })
+  console.log(currentTag)
 }
 // function to delete tag and delete tag.textcontent from array (currentTag)
 function deleteTag(closeButton) {
@@ -54,6 +55,7 @@ function deleteTag(closeButton) {
   const recipeToDelete = []
   currentTag.splice(currentTag.indexOf(tagText), 1)
   tag.remove()
+  console.log(currentTag)
 }
 // Event to delete tag
 researchTagSection[0].addEventListener('click', (e) => {
@@ -70,17 +72,14 @@ researchTagSection[0].addEventListener('click', (e) => {
           if (suggestionDiv === testUlDivIngredient[0]) {
             createResearchTag('ingredients-tag', e.target.textContent)
             advancedFilter(e.target)
-            e.target.style.display = 'none'
           }
           if (suggestionDiv === testUlDivAppareils[0]) {
             createResearchTag('appareils-tag', e.target.textContent)
             advancedFilter(e.target)
-            e.target.style.display = 'none'
           }
           if (suggestionDiv === testUlDivUstensils[0]) {
             createResearchTag('ustensils-tag', e.target.textContent)
             advancedFilter(e.target)
-            e.target.style.display = 'none'
           }
         }
       }
