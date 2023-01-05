@@ -1,4 +1,16 @@
 // DOM
+const dropdownClose = document.getElementsByClassName('dropdown-close')
+const dropdownOpen = document.getElementsByClassName('dropdown-open')
+
+dropdownClose[0].addEventListener('click', (e) => {
+  dropdownClose[0].classList.toggle('hide')
+  dropdownOpen[0].classList.toggle('hide')
+})
+
+dropdownOpen[0].addEventListener('click', (e) => {
+  dropdownClose[0].classList.toggle('hide')
+  dropdownOpen[0].classList.toggle('hide')
+})
 
 const ingredientsDiv = document.getElementsByClassName('ingredients')
 const appareilsDiv = document.getElementsByClassName('appareils')
@@ -7,7 +19,6 @@ const suggestionDivIngredient = document.getElementsByClassName('suggestion-cont
 const ingredientsInput = document.getElementById('search-filter-ingredients')
 const appareilsInput = document.getElementById('search-filter-appareils')
 const ustensilsInput = document.getElementById('search-filter-ustensils')
-const tagCloseButton = Array.from(document.querySelectorAll('.fa-circle-xmark'))
 const suggestionListIngredient = ingredientsDiv[0].querySelectorAll('li')
 const suggestionListAppareils = appareilsDiv[0].querySelectorAll('li')
 const suggestionListUstensils = ustensilsDiv[0].querySelectorAll('li')
@@ -41,12 +52,11 @@ function createResearchTag(tagClass, suggestion) {
   tagText.textContent = suggestion
   const tagClose = document.createElement('i')
   tagClose.classList.add('fa-regular', 'fa-circle-xmark')
-  tagCloseButton.push(tagClose)
   researchTagSection[0].appendChild(tag)
   tag.appendChild(tagText)
   tag.appendChild(tagClose)
   currentTag.push({ class: tagClass, text: suggestion })
-  console.log(currentTag)
+  advancedFilterV2(currentTag)
 }
 // function to delete tag and delete tag.textcontent from array (currentTag)
 function deleteTag(closeButton) {
@@ -55,7 +65,7 @@ function deleteTag(closeButton) {
   const recipeToDelete = []
   currentTag.splice(currentTag.indexOf(tagText), 1)
   tag.remove()
-  console.log(currentTag)
+  advancedFilterV2(currentTag)
 }
 // Event to delete tag
 researchTagSection[0].addEventListener('click', (e) => {
@@ -68,18 +78,15 @@ researchTagSection[0].addEventListener('click', (e) => {
   ;[testUlDivIngredient[0], testUlDivAppareils[0], testUlDivUstensils[0]].forEach((suggestionDiv) => {
     suggestionDiv.addEventListener(action, (e) => {
       if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
-        if (!currentTag.includes(e.target.textContent)) {
-          if (suggestionDiv === testUlDivIngredient[0]) {
-            createResearchTag('ingredients-tag', e.target.textContent)
-            advancedFilter(e.target)
-          }
-          if (suggestionDiv === testUlDivAppareils[0]) {
-            createResearchTag('appareils-tag', e.target.textContent)
-            advancedFilter(e.target)
-          }
-          if (suggestionDiv === testUlDivUstensils[0]) {
-            createResearchTag('ustensils-tag', e.target.textContent)
-            advancedFilter(e.target)
+        if (e.target.classList[0] !== 'suggestion') {
+          if (!currentTag.includes(e.target.textContent)) {
+            if (suggestionDiv === testUlDivIngredient[0]) {
+              createResearchTag('ingredients-tag', e.target.textContent)
+            } else if (suggestionDiv === testUlDivAppareils[0]) {
+              createResearchTag('appareils-tag', e.target.textContent)
+            } else if (suggestionDiv === testUlDivUstensils[0]) {
+              createResearchTag('ustensils-tag', e.target.textContent)
+            }
           }
         }
       }
@@ -87,9 +94,14 @@ researchTagSection[0].addEventListener('click', (e) => {
   })
 })
 
+// e.target avec id adaptatif c'est une meilleurs pratique que de faire des tableau d'objet
+// plutôt faire une fonction toggle pour passer de active, inactive
 // Event to display suggestion when user focus one advanced search input
 mySearchProperties.forEach((element) => {
   element.input.addEventListener('focus', (e) => {
+    // console.log(element.chevron)
+    // console.log(element.category)
+    // console.log(element.suggestionDiv)
     showSuggestion(element.category, element.suggestionDiv)
   })
   element.chevron.addEventListener('click', (e) => {
@@ -98,6 +110,9 @@ mySearchProperties.forEach((element) => {
     console.log(element.suggestionDiv)
     showSuggestion(element.category, element.suggestionDiv)
   })
+  // element.input.addEventListener('blur', (e) => {
+  //   hideSuggestion(element.category, element.suggestionDiv)
+  // })
 })
 
 // Event to hide suggestion when user click on the respective chevron
@@ -109,7 +124,8 @@ mySearchProperties.forEach((element) => {
 
 function showSuggestion(category, suggestionDiv) {
   category.classList.add('search-filter-box')
-  category.children[0].children[1].classList.add('fa-chevron-down-rotate')
+  // category.children[0].children[1].classList.add('fa-chevron-down-rotate')
+  console.log(category.children[0].children[1])
   suggestionDiv.classList.add('suggestion-active')
   suggestionDiv.classList.remove('suggestion-inactive')
 }

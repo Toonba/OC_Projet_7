@@ -5,26 +5,23 @@ const ustensilsSearchInput = document.getElementById('search-filter-ustensils')
 
 const myAdvancedSearchInput = [ingredientsSearchInput, appareilsSearchInput, ustensilsSearchInput]
 
-let currentRecipes = recipes
+let currentMainSearch = recipes
 // Function that display recipes matching user input (if user input.length >3, else he display all recipes)) + modify the list of suggestion for each advanced search so that it suggest only ingredients, appareils or ustensils that are within the remaining recipes folowing main search.
 function mainSearch(searchInput) {
   let currentSearch = ''
   if (searchInput.value.length < 3) {
-    currentRecipes = recipes
+    currentMainSearch = recipes
   }
   if (searchInput.value.length >= 3) {
     currentRecipes = []
     currentSearch = searchInput.value.toLowerCase()
-    currentRecipes = recipes.filter((element) =>
-      // element.name.toLowerCase().includes(currentSearch) || element.description.toLowerCase().includes(currentSearch) ||
-      element.ingredients.some((item) => item.ingredient.toLowerCase().includes(currentSearch))
-    )
+    currentMainSearch = recipes.filter((element) => element.name.toLowerCase().includes(currentSearch) || element.description.toLowerCase().includes(currentSearch) || element.ingredients.some((item) => item.ingredient.toLowerCase().includes(currentSearch)))
   }
   recipesSection[0].innerHTML = ''
-  displayRecipes(currentRecipes)
-  getListIngredients(currentRecipes)
-  getListAppareils(currentRecipes)
-  getListUstensils(currentRecipes)
+  displayRecipes(currentMainSearch)
+  getListIngredients(currentMainSearch)
+  getListAppareils(currentMainSearch)
+  getListUstensils(currentMainSearch)
   return currentRecipes
 }
 
@@ -53,17 +50,41 @@ myAdvancedSearchInput.forEach((input) => {
   })
 })
 
-let advancedRecipes = []
-function advancedFilter(suggestion) {
-  advancedRecipes = []
-  if (suggestion.parentNode.classList[1] === 'suggestion-ingredients') {
-    advancedRecipes = currentRecipes.filter((element) => element.ingredients.some((item) => item.ingredient.toLowerCase().includes(suggestion.textContent.toLowerCase())))
-  } else if (suggestion.parentNode.classList[1] === 'suggestion-appareils') {
-    advancedRecipes = currentRecipes.filter((element) => element.appliance.toLowerCase().includes(suggestion.textContent.toLowerCase()))
-  } else if (suggestion.parentNode.classList[1] === 'suggestion-ustensils') {
-    advancedRecipes = currentRecipes.filter((element) => element.ustensils.some((item) => item.toLowerCase().includes(suggestion.textContent.toLowerCase())))
+function advancedFilterV2(tagArray) {
+  currentRecipes = currentMainSearch
+  if (tagArray.length === 0) {
+    currentRecipes = currentMainSearch
+  } else {
+    tagArray.forEach((element) => {
+      if (element.class === 'ingredients-tag') {
+        advancedRecipes = currentRecipes.filter((recipe) => recipe.ingredients.some((item) => item.ingredient.toLowerCase().includes(element.text.toLowerCase())))
+      } else if (element.class === 'appareils-tag') {
+        advancedRecipes = currentRecipes.filter((recipe) => recipe.appliance.toLowerCase().includes(element.text.toLowerCase()))
+      } else if (element.class === 'ustensils-tag') {
+        advancedRecipes = currentRecipes.filter((recipe) => recipe.ustensils.some((item) => item.toLowerCase().includes(element.text.toLowerCase())))
+      }
+      currentRecipes = advancedRecipes
+    })
   }
-  currentRecipes = advancedRecipes
+  recipesSection[0].innerHTML = ''
+  displayRecipes(currentRecipes)
+  getListIngredients(currentRecipes)
+  getListAppareils(currentRecipes)
+  getListUstensils(currentRecipes)
+}
+let advancedRecipes = []
+function advancedFilter(tagclass, suggestion) {
+  advancedRecipes = []
+  if (tagclass === 'ingredients-tag') {
+    // voir pour mettre la fonction filter dans un fonction "a part" plutôt que de tous écrire ici
+    // forEach Map Recue FIlter refaire fonction de dessous en utilisant uniquement ceux-ci très probablement utilisé tableau intermédiaire
+    advancedRecipes = currentRecipes.filter((element) => element.ingredients.some((item) => item.ingredient.toLowerCase().includes(suggestion.toLowerCase())))
+    console.log(Array.prototype.some)
+  } else if (tagclass === 'appareils-tag') {
+    advancedRecipes = currentRecipes.filter((element) => element.appliance.toLowerCase().includes(suggestion.toLowerCase()))
+  } else if (tagclass === 'ustensils-tag') {
+    advancedRecipes = currentRecipes.filter((element) => element.ustensils.some((item) => item.toLowerCase().includes(suggestion.toLowerCase())))
+  }
   recipesSection[0].innerHTML = ''
   displayRecipes(advancedRecipes)
   getListIngredients(advancedRecipes)

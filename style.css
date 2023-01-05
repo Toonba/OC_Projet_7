@@ -94,6 +94,15 @@ input[type='search']::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
+/* DropDown */
+.hide {
+  display: none;
+}
+
+.dropdown-open {
+  width: 40rem;
+  position: relative;
+}
 .filtres {
   display: flex;
   align-items: baseline;
@@ -108,10 +117,6 @@ input[type='search']::-webkit-search-cancel-button {
   color: white;
 }
 /* FAIRE LA MSIE EN FORME LISTE EN FLEXCOLONNE POUR VOIR */
-.search-filter-box {
-  width: 40rem;
-  position: relative;
-}
 
 .search-filter-input {
   width: 70%;
@@ -144,12 +149,6 @@ input[type='search']::-webkit-search-cancel-button {
   transform: rotateX(180deg);
 }
 
-.suggestion-inactive {
-  display: none;
-}
-.suggestion-active {
-  display: block;
-}
 .suggestion {
   width: 100%;
   height: 440px;
