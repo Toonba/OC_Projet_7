@@ -11,6 +11,24 @@ dropdownOpen[0].addEventListener('click', (e) => {
   dropdownClose[0].classList.toggle('hide')
   dropdownOpen[0].classList.toggle('hide')
 })
+dropdownClose[1].addEventListener('click', (e) => {
+  dropdownClose[1].classList.toggle('hide')
+  dropdownOpen[1].classList.toggle('hide')
+})
+
+dropdownOpen[1].addEventListener('click', (e) => {
+  dropdownClose[1].classList.toggle('hide')
+  dropdownOpen[1].classList.toggle('hide')
+})
+dropdownClose[2].addEventListener('click', (e) => {
+  dropdownClose[2].classList.toggle('hide')
+  dropdownOpen[2].classList.toggle('hide')
+})
+
+dropdownOpen[2].addEventListener('click', (e) => {
+  dropdownClose[2].classList.toggle('hide')
+  dropdownOpen[2].classList.toggle('hide')
+})
 
 const ingredientsDiv = document.getElementsByClassName('ingredients')
 const appareilsDiv = document.getElementsByClassName('appareils')

@@ -15,14 +15,13 @@ function mainSearch(searchInput) {
   if (searchInput.value.length >= 3) {
     currentRecipes = []
     currentSearch = searchInput.value.toLowerCase()
-    currentMainSearch = recipes.filter((element) => element.name.toLowerCase().includes(currentSearch) || element.description.toLowerCase().includes(currentSearch) || element.ingredients.some((item) => item.ingredient.toLowerCase().includes(currentSearch)))
+    currentMainSearch = recipes.filter((element) => element.name.toLowerCase().includes(currentSearch) || element.description.toLowerCase().includes(currentSearch) || element.ingredients.toLowerCase().includes(currentSearch))
   }
   recipesSection[0].innerHTML = ''
   displayRecipes(currentMainSearch)
   getListIngredients(currentMainSearch)
   getListAppareils(currentMainSearch)
   getListUstensils(currentMainSearch)
-  return currentRecipes
 }
 
 function advancedSearch(searchInput) {
@@ -83,7 +82,7 @@ function advancedFilter(tagclass, suggestion) {
   } else if (tagclass === 'appareils-tag') {
     advancedRecipes = currentRecipes.filter((element) => element.appliance.toLowerCase().includes(suggestion.toLowerCase()))
   } else if (tagclass === 'ustensils-tag') {
-    advancedRecipes = currentRecipes.filter((element) => element.ustensils.some((item) => item.toLowerCase().includes(suggestion.toLowerCase())))
+    advancedRecipes = currentRecipes.filter((element) => element.ustensils.includes(suggestion.toLowerCase()))
   }
   recipesSection[0].innerHTML = ''
   displayRecipes(advancedRecipes)
@@ -92,3 +91,4 @@ function advancedFilter(tagclass, suggestion) {
   getListUstensils(advancedRecipes)
   return advancedRecipes
 }
+
