@@ -70,7 +70,6 @@ for (let ingredient of listUniqueIngredients) {
   let obj = { ingredients: ingredient, 'recipe id': recipeId }
   recipesByIngredient.push(obj)
 }
-console.log(recipesByIngredient)
 
 let recipesByAppareil = []
 for (let appareil of listUniqueAppareils) {
@@ -97,6 +96,8 @@ for (let ustensil of listUniqueUstensils) {
   let obj = { ustensils: ustensil, 'recipe id': recipeId }
   recipesByUstensils.push(obj)
 }
+
+console.log(recipesByAppareil)
 
 // Faudra potentiellement mettre ça ailleurs et le faire d'une autre façon, ça sera probablement mieux
 function displayIngredientsSuggestion(array) {
