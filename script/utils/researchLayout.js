@@ -1,35 +1,6 @@
 // DOM
 const dropdownClose = document.getElementsByClassName('dropdown-close')
 const dropdownOpen = document.getElementsByClassName('dropdown-open')
-
-dropdownClose[0].addEventListener('click', (e) => {
-  dropdownClose[0].classList.toggle('hide')
-  dropdownOpen[0].classList.toggle('hide')
-})
-
-dropdownOpen[0].addEventListener('click', (e) => {
-  dropdownClose[0].classList.toggle('hide')
-  dropdownOpen[0].classList.toggle('hide')
-})
-dropdownClose[1].addEventListener('click', (e) => {
-  dropdownClose[1].classList.toggle('hide')
-  dropdownOpen[1].classList.toggle('hide')
-})
-
-dropdownOpen[1].addEventListener('click', (e) => {
-  dropdownClose[1].classList.toggle('hide')
-  dropdownOpen[1].classList.toggle('hide')
-})
-dropdownClose[2].addEventListener('click', (e) => {
-  dropdownClose[2].classList.toggle('hide')
-  dropdownOpen[2].classList.toggle('hide')
-})
-
-dropdownOpen[2].addEventListener('click', (e) => {
-  dropdownClose[2].classList.toggle('hide')
-  dropdownOpen[2].classList.toggle('hide')
-})
-
 const ingredientsDiv = document.getElementsByClassName('ingredients')
 const appareilsDiv = document.getElementsByClassName('appareils')
 const ustensilsDiv = document.getElementsByClassName('ustensils')
@@ -61,7 +32,11 @@ const appareilsProperties = new SearchProperties(appareilsDiv[0], suggestionDivI
 const ustensilsProperties = new SearchProperties(ustensilsDiv[0], suggestionDivIngredient[2], ustensilsInput, suggestionListUstensils, 'ustensils-tag', chevronDown[2])
 let mySearchProperties = [ingredientsProperties, appareilsProperties, ustensilsProperties]
 
-let currentTag = []
+let currentTag = {
+  ingredients: [],
+  appareils: [],
+  ustensils: []
+}
 // function to create research tag element and add tag.textcontent in an array (currentTag) that will allow no duplication of tag
 function createResearchTag(tagClass, suggestion) {
   const tag = document.createElement('div')
@@ -73,18 +48,43 @@ function createResearchTag(tagClass, suggestion) {
   researchTagSection[0].appendChild(tag)
   tag.appendChild(tagText)
   tag.appendChild(tagClose)
-  currentTag.push({ class: tagClass, text: suggestion })
-  advancedFilterV2(currentTag)
+  if (tagClass === 'ingredients-tag') {
+    currentTag.ingredients.push(suggestion)
+  } else if (tagClass === 'appareils-tag') {
+    currentTag.appareils.push(suggestion)
+  } else if (tagClass === 'ustensils-tag') {
+    currentTag.ustensils.push(suggestion)
+  }
+  advancedSearch(currentTag)
 }
 // function to delete tag and delete tag.textcontent from array (currentTag)
 function deleteTag(closeButton) {
   const tag = closeButton.parentNode
   const tagText = tag.children[0].textContent
+  const tagClass = tag.classList[0]
   const recipeToDelete = []
-  currentTag.splice(currentTag.indexOf(tagText), 1)
+  removedClicked(tagText)
+  if (tagClass === 'ingredients-tag') {
+    currentTag.ingredients.splice(currentTag.ingredients.indexOf(tagText), 1)
+  } else if (tagClass === 'appareils-tag') {
+    currentTag.appareils.splice(currentTag.appareils.indexOf(tagText), 1)
+  } else if (tagClass === 'ustensils-tag') {
+    currentTag.ustensils.splice(currentTag.ustensils.indexOf(tagText), 1)
+  }
   tag.remove()
-  advancedFilterV2(currentTag)
+  advancedSearch(currentTag)
 }
+
+// function to remove clicked class
+function removedClicked(text) {
+  let clickedSuggestion = document.getElementsByClassName('clicked')
+  for (i = 0; i < clickedSuggestion.length; i++) {
+    if (clickedSuggestion[i].textContent === text) {
+      clickedSuggestion[i].classList.remove('clicked')
+    }
+  }
+}
+
 // Event to delete tag
 researchTagSection[0].addEventListener('click', (e) => {
   if (e.target.classList[1] === 'fa-circle-xmark') {
@@ -97,7 +97,8 @@ researchTagSection[0].addEventListener('click', (e) => {
     suggestionDiv.addEventListener(action, (e) => {
       if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
         if (e.target.classList[0] !== 'suggestion') {
-          if (!currentTag.includes(e.target.textContent)) {
+          if (e.target.classList[0] !== 'clicked') {
+            e.target.classList.add('clicked')
             if (suggestionDiv === testUlDivIngredient[0]) {
               createResearchTag('ingredients-tag', e.target.textContent)
             } else if (suggestionDiv === testUlDivAppareils[0]) {
@@ -112,45 +113,51 @@ researchTagSection[0].addEventListener('click', (e) => {
   })
 })
 
+function displaySuggestion(array, type) {
+  for (let element of array) {
+    const newItem = document.createElement('li')
+    newItem.setAttribute('tabindex', '0')
+    newItem.textContent = element
+    if (type === 'ingredient') {
+      ingredientsSuggestion[0].appendChild(newItem)
+    }
+    if (type === 'appareil') {
+      appareilsSuggestion[0].appendChild(newItem)
+    }
+    if (type === 'ustensil') {
+      ustensilsSuggestion[0].appendChild(newItem)
+    }
+  }
+}
+
 // e.target avec id adaptatif c'est une meilleurs pratique que de faire des tableau d'objet
 // plutôt faire une fonction toggle pour passer de active, inactive
 // Event to display suggestion when user focus one advanced search input
-mySearchProperties.forEach((element) => {
-  element.input.addEventListener('focus', (e) => {
-    // console.log(element.chevron)
-    // console.log(element.category)
-    // console.log(element.suggestionDiv)
-    showSuggestion(element.category, element.suggestionDiv)
-  })
-  element.chevron.addEventListener('click', (e) => {
-    console.log(element.chevron)
-    console.log(element.category)
-    console.log(element.suggestionDiv)
-    showSuggestion(element.category, element.suggestionDiv)
-  })
-  // element.input.addEventListener('blur', (e) => {
-  //   hideSuggestion(element.category, element.suggestionDiv)
-  // })
+
+dropdownClose[0].addEventListener('click', (e) => {
+  dropdownClose[0].classList.toggle('hide')
+  dropdownOpen[0].classList.toggle('hide')
 })
 
-// Event to hide suggestion when user click on the respective chevron
-mySearchProperties.forEach((element) => {
-  element.chevron.addEventListener('click', (e) => {
-    hideSuggestion(element.category, element.suggestionDiv)
-  })
+dropdownOpen[0].addEventListener('click', (e) => {
+  dropdownClose[0].classList.toggle('hide')
+  dropdownOpen[0].classList.toggle('hide')
+})
+dropdownClose[1].addEventListener('click', (e) => {
+  dropdownClose[1].classList.toggle('hide')
+  dropdownOpen[1].classList.toggle('hide')
 })
 
-function showSuggestion(category, suggestionDiv) {
-  category.classList.add('search-filter-box')
-  // category.children[0].children[1].classList.add('fa-chevron-down-rotate')
-  console.log(category.children[0].children[1])
-  suggestionDiv.classList.add('suggestion-active')
-  suggestionDiv.classList.remove('suggestion-inactive')
-}
+dropdownOpen[1].addEventListener('click', (e) => {
+  dropdownClose[1].classList.toggle('hide')
+  dropdownOpen[1].classList.toggle('hide')
+})
+dropdownClose[2].addEventListener('click', (e) => {
+  dropdownClose[2].classList.toggle('hide')
+  dropdownOpen[2].classList.toggle('hide')
+})
 
-function hideSuggestion(category, suggestionDiv) {
-  category.classList.remove('search-filter-box')
-  category.children[0].children[1].classList.remove('fa-chevron-down-rotate')
-  suggestionDiv.classList.remove('suggestion-active')
-  suggestionDiv.classList.add('suggestion-inactive')
-}
+dropdownOpen[2].addEventListener('click', (e) => {
+  dropdownClose[2].classList.toggle('hide')
+  dropdownOpen[2].classList.toggle('hide')
+})

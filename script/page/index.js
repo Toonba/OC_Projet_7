@@ -1,4 +1,3 @@
-const recipesSection = document.getElementsByClassName('recipes-gallery')
 function displayRecipes(array) {
   array.forEach((element) => {
     const recipeTemplate = recipeFactory(element)
@@ -9,6 +8,12 @@ function displayRecipes(array) {
 
 function init() {
   displayRecipes(recipes)
+  getListIngredients(recipes)
+  getListAppareils(recipes)
+  getListUstensils(recipes)
+  displaySuggestion(listUniqueIngredients, 'ingredient')
+  displaySuggestion(listUniqueAppareils, 'appareil')
+  displaySuggestion(listUniqueUstensils, 'ustensil')
 }
 
 init()

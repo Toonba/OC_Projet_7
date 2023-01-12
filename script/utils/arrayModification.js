@@ -15,6 +15,22 @@ function getListOfUnique(array) {
   return newArray
 }
 
+let arrayTest = [1, 1, 4, 2, 2, 4, 1, 3, 3]
+let arrayTest2 = getListOfMultiple(arrayTest)
+let arrayTest3 = getListOfUnique(arrayTest2)
+console.log(arrayTest2)
+console.log(arrayTest3)
+
+function getListOfMultiple(array) {
+  let newArray = []
+  for (let i = 0; i < array.length; i++) {
+    if (array.indexOf(array[i]) !== i) {
+      newArray.push(array[i])
+    }
+  }
+  return newArray
+}
+
 // function that give the list of unique ingredient within the array
 let listUniqueIngredients = []
 function getListIngredients(array) {
@@ -42,6 +58,7 @@ function getListAppareils(array) {
 
 // function that give the list of unique ustensils within the array
 let listUniqueUstensils = []
+let recipesByIngredient = []
 function getListUstensils(array) {
   let listAllUstensils = []
   for (let element of array) {
@@ -50,25 +67,25 @@ function getListUstensils(array) {
     }
   }
   listUniqueUstensils = getListOfUnique(listAllUstensils)
+  getRecipesByIngredient(listUniqueIngredients)
   return listUniqueUstensils
 }
-getListIngredients(recipes)
-getListAppareils(recipes)
-getListUstensils(recipes)
+console.log(recipesByIngredient)
 // Get array of recipes in fonction of ingr appli and usten
 
-let recipesByIngredient = []
-for (let ingredient of listUniqueIngredients) {
-  let recipeId = []
-  for (let i = 0; i < recipes.length; i++) {
-    for (j = 0; j < recipes[i].ingredients.length; j++) {
-      if (recipes[i].ingredients[j].ingredient.toLowerCase() === ingredient) {
-        recipeId.push(recipes[i].id)
+function getRecipesByIngredient(array) {
+  for (let ingredient of array) {
+    let recipeId = []
+    for (let i = 0; i < recipes.length; i++) {
+      for (j = 0; j < recipes[i].ingredients.length; j++) {
+        if (recipes[i].ingredients[j].ingredient.toLowerCase() === ingredient) {
+          recipeId.push(recipes[i].id)
+        }
       }
     }
+    let obj = { ingredients: ingredient, recipeID: recipeId }
+    recipesByIngredient.push(obj)
   }
-  let obj = { ingredients: ingredient, 'recipe id': recipeId }
-  recipesByIngredient.push(obj)
 }
 
 let recipesByAppareil = []
@@ -79,7 +96,7 @@ for (let appareil of listUniqueAppareils) {
       recipeId.push(recipes[i].id)
     }
   }
-  let obj = { appareil: appareil, 'recipe id': recipeId }
+  let obj = { appareil: appareil, recipeID: recipeId }
   recipesByAppareil.push(obj)
 }
 
@@ -93,39 +110,16 @@ for (let ustensil of listUniqueUstensils) {
       }
     }
   }
-  let obj = { ustensils: ustensil, 'recipe id': recipeId }
+  let obj = { ustensils: ustensil, recipeID: recipeId }
   recipesByUstensils.push(obj)
 }
 
-console.log(recipesByAppareil)
-
-// Faudra potentiellement mettre ça ailleurs et le faire d'une autre façon, ça sera probablement mieux
-function displayIngredientsSuggestion(array) {
-  ingredientsSuggestion[0].innerHTML = ''
-  array.forEach((element) => {
-    const newItem = document.createElement('li')
-    newItem.setAttribute('tabindex', '0')
-    newItem.textContent = element
-    ingredientsSuggestion[0].appendChild(newItem)
-  })
+for (let recipe of recipes) {
+  let ingredientList = []
+  recipe.ingredientList = []
+  for (let i = 0; i < recipe.ingredients.length; i++) {
+    ingredientList.push(recipe.ingredients[i].ingredient)
+  }
+  recipe.ingredientList = ingredientList.join(' ')
 }
-
-function displayAppareilsSuggestion(array) {
-  appareilsSuggestion[0].innerHTML = ''
-  array.forEach((element) => {
-    const newItem = document.createElement('li')
-    newItem.setAttribute('tabindex', '0')
-    newItem.textContent = element
-    appareilsSuggestion[0].appendChild(newItem)
-  })
-}
-
-function displayUstensilsSuggestion(array) {
-  ustensilsSuggestion[0].innerHTML = ''
-  array.forEach((element) => {
-    const newItem = document.createElement('li')
-    newItem.setAttribute('tabindex', '0')
-    newItem.textContent = element
-    ustensilsSuggestion[0].appendChild(newItem)
-  })
-}
+console.log(recipes)
