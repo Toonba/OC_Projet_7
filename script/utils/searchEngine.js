@@ -45,20 +45,20 @@ mainSearchInput.addEventListener('keyup', (e) => {
 //   ustensils:['cuillère à soupe', 'verre']
 // }
 
+// Il va falloir tester les différentes config pour voir ceux qui fonctionne et ceux qui fonctionne pas, je pense avoir un problème au niveau de l'intersection des recette L 'intersection est bonne entre ingredient appareils et ustensils, mais pas entre ingrédient ou ustensils + il faut afficher un message quand la recherche ne donne rien !
 function advancedSearch(tag) {
   let currentRecipes = mainSearch(mainSearchInput, recipes)
   let advancedRecipesAppareils = []
   let advancedRecipesIngredients = []
   let advancedRecipesUstensils = []
   if (tag.appareils.length > 1) {
+    console.log('appareil >1')
     recipesSection[0].innerHTML = 'aucune recette ne correspond à votre recherche'
   } else {
     if (tag.appareils.length === 0) {
       advancedRecipesAppareils = currentRecipes
-    } else if (tag.appareils.length < 2) {
+    } else {
       for (let recipe of currentRecipes) {
-        console.log(tag.appareils[0])
-        console.log(recipe.appliance)
         if (tag.appareils[0] === recipe.appliance.toLowerCase()) {
           advancedRecipesAppareils.push(recipe)
         }
@@ -66,50 +66,55 @@ function advancedSearch(tag) {
     }
     if (tag.ingredients.length === 0) {
       advancedRecipesIngredients = advancedRecipesAppareils
+    } else if (tag.ingredients.length === 1) {
+      for (let recipe of advancedRecipesAppareils) {
+        for (i = 0; i < recipe.ingredients.length; i++) {
+          if (tag.ingredients[0] === recipe.ingredients[i].ingredient.toLowerCase()) {
+            advancedRecipesIngredients.push(recipe)
+          }
+        }
+      }
     } else {
       for (let ingredient of tag.ingredients) {
         for (let recipe of advancedRecipesAppareils) {
-          for (i = 0; i < recipe.ingredients.length; i++) {
+          for (let i = 0; i < recipe.ingredients.length; i++) {
             if (ingredient === recipe.ingredients[i].ingredient.toLowerCase()) {
               advancedRecipesIngredients.push(recipe)
             }
           }
         }
+        // advancedRecipesAppareils = advancedRecipesIngredients
       }
     }
     if (tag.ustensils.length === 0) {
       advancedRecipesUstensils = advancedRecipesIngredients
-    } else {
-      for (let ustensil of tag.ustensils) {
-        for (let recipe of advancedRecipesIngredients) {
-          for (i = 0; i < recipe.ustensils.length; i++) {
-            if (ustensil === recipe.ustensil[i].toLowerCase()) advancedRecipesUstensils.push(recipe)
+    } else if (tag.ustensils.length === 1) {
+      for (let recipe of advancedRecipesIngredients) {
+        for (i = 0; i < recipe.ustensils.length; i++) {
+          if (tag.ustensils[0] === recipe.ustensils[i].toLowerCase()) {
+            advancedRecipesUstensils.push(recipe)
           }
         }
       }
     }
-    recipesSection[0].innerHTML = ''
+    else {
+      for (let ustensil of tag.ustensils) {
+        console.log('coucou')
+        for (let recipe of advancedRecipesIngredients) {
+          for (i = 0; i < recipe.ustensils.length; i++) {
+            if (ustensil === recipe.ustensils[i].toLowerCase()) {
+              advancedRecipesUstensils.push(recipe)
+              // console.log(advancedRecipesUstensils)
+            }
+          }
+        }
+      }
+    }
+  }
+  recipesSection[0].innerHTML = ''
+  if (advancedRecipesUstensils.length === 0) {
+    recipesSection[0].innerHTML = 'aucune recette ne correspond à votre recherche'
+  } else {
     displayRecipes(advancedRecipesUstensils)
   }
 }
-// for (let )
-
-// let allRecipesIDMatching = []
-// for (element of array) {
-//   if (element.class === 'ingredients-tag') {
-//     for (let i = 0; i < recipesByIngredient.length; i++) {
-//       if (element.text === recipesByIngredient[i].ingredients) {
-//         for (let id of recipesByIngredient[i].recipeID) {
-//           allRecipesIDMatching.push(id)
-//         }
-//       }
-//     }
-//   } else if (element.tagClass === 'appareils-tag') {
-//   } else if (element.tagClass === 'ustensils-tag') {
-//   }
-// }
-// let recipesMatchingSeveralTag = getListOfMultiple(allRecipesIDMatching)
-// let recipesToKeep = console.log(allRecipesIDMatching)
-// recipesSection[0].innerHTML = ''
-// displayRecipes(advancedRecipes)
-// console.log('coucou')
