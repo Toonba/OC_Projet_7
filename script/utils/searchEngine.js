@@ -76,6 +76,7 @@ function advancedSearch(tag) {
       }
     } else {
       for (let ingredient of tag.ingredients) {
+        advancedRecipesIngredients = []
         for (let recipe of advancedRecipesAppareils) {
           for (let i = 0; i < recipe.ingredients.length; i++) {
             if (ingredient === recipe.ingredients[i].ingredient.toLowerCase()) {
@@ -83,7 +84,7 @@ function advancedSearch(tag) {
             }
           }
         }
-        // advancedRecipesAppareils = advancedRecipesIngredients
+        advancedRecipesAppareils = advancedRecipesIngredients
       }
     }
     if (tag.ustensils.length === 0) {
@@ -96,18 +97,17 @@ function advancedSearch(tag) {
           }
         }
       }
-    }
-    else {
+    } else {
       for (let ustensil of tag.ustensils) {
-        console.log('coucou')
+        advancedRecipesUstensils = []
         for (let recipe of advancedRecipesIngredients) {
           for (i = 0; i < recipe.ustensils.length; i++) {
             if (ustensil === recipe.ustensils[i].toLowerCase()) {
               advancedRecipesUstensils.push(recipe)
-              // console.log(advancedRecipesUstensils)
             }
           }
         }
+        advancedRecipesIngredients = advancedRecipesUstensils
       }
     }
   }

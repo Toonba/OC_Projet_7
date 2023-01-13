@@ -15,12 +15,6 @@ function getListOfUnique(array) {
   return newArray
 }
 
-let arrayTest = [1, 1, 4, 2, 2, 4, 1, 3, 3]
-let arrayTest2 = getListOfMultiple(arrayTest)
-let arrayTest3 = getListOfUnique(arrayTest2)
-console.log(arrayTest2)
-console.log(arrayTest3)
-
 function getListOfMultiple(array) {
   let newArray = []
   for (let i = 0; i < array.length; i++) {
@@ -70,7 +64,6 @@ function getListUstensils(array) {
   getRecipesByIngredient(listUniqueIngredients)
   return listUniqueUstensils
 }
-console.log(recipesByIngredient)
 // Get array of recipes in fonction of ingr appli and usten
 
 function getRecipesByIngredient(array) {
@@ -122,4 +115,3 @@ for (let recipe of recipes) {
   }
   recipe.ingredientList = ingredientList.join(' ')
 }
-console.log(recipes)
