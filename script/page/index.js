@@ -8,12 +8,7 @@ function displayRecipes(array) {
 
 function init() {
   displayRecipes(recipes)
-  getListIngredients(recipes)
-  getListAppareils(recipes)
-  getListUstensils(recipes)
-  displaySuggestion(listUniqueIngredients, 'ingredient')
-  displaySuggestion(listUniqueAppareils, 'appareil')
-  displaySuggestion(listUniqueUstensils, 'ustensil')
+  getSuggestionList(recipes)
 }
 
 init()

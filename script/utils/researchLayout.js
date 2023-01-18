@@ -1,36 +1,12 @@
 // DOM
 const dropdownClose = document.getElementsByClassName('dropdown-close')
 const dropdownOpen = document.getElementsByClassName('dropdown-open')
-const ingredientsDiv = document.getElementsByClassName('ingredients')
-const appareilsDiv = document.getElementsByClassName('appareils')
-const ustensilsDiv = document.getElementsByClassName('ustensils')
-const suggestionDivIngredient = document.getElementsByClassName('suggestion-container')
-const ingredientsInput = document.getElementById('search-filter-ingredients')
-const appareilsInput = document.getElementById('search-filter-appareils')
-const ustensilsInput = document.getElementById('search-filter-ustensils')
-const suggestionListIngredient = ingredientsDiv[0].querySelectorAll('li')
-const suggestionListAppareils = appareilsDiv[0].querySelectorAll('li')
-const suggestionListUstensils = ustensilsDiv[0].querySelectorAll('li')
-const testUlDivIngredient = document.getElementsByClassName('suggestion-ingredients')
-const testUlDivAppareils = document.getElementsByClassName('suggestion-appareils')
-const testUlDivUstensils = document.getElementsByClassName('suggestion-ustensils')
+const suggestionDivIngredient = document.getElementsByClassName('suggestion-ingredients')
+const suggestionDivAppareils = document.getElementsByClassName('suggestion-appareils')
+const suggestionDivUstensils = document.getElementsByClassName('suggestion-ustensils')
 const chevronDown = document.getElementsByClassName('fa-chevron-down')
-
-// class to gather multiple information about advanced search input
-class SearchProperties {
-  constructor(category, suggestionDiv, input, suggestionList, tagClass, chevron) {
-    this.category = category
-    this.suggestionDiv = suggestionDiv
-    this.input = input
-    this.suggestionList = suggestionList
-    this.tagClass = tagClass
-    this.chevron = chevron
-  }
-}
-const ingredientsProperties = new SearchProperties(ingredientsDiv[0], suggestionDivIngredient[0], ingredientsInput, suggestionListIngredient, 'ingredients-tag', chevronDown[0])
-const appareilsProperties = new SearchProperties(appareilsDiv[0], suggestionDivIngredient[1], appareilsInput, suggestionListAppareils, 'appareils-tag', chevronDown[1])
-const ustensilsProperties = new SearchProperties(ustensilsDiv[0], suggestionDivIngredient[2], ustensilsInput, suggestionListUstensils, 'ustensils-tag', chevronDown[2])
-let mySearchProperties = [ingredientsProperties, appareilsProperties, ustensilsProperties]
+const suggestionContainer = document.getElementsByClassName('suggestion-container')
+const researchTagSection = document.getElementsByClassName('research-tag')
 
 let currentTag = {
   ingredients: [],
@@ -62,7 +38,6 @@ function deleteTag(closeButton) {
   const tag = closeButton.parentNode
   const tagText = tag.children[0].textContent
   const tagClass = tag.classList[0]
-  const recipeToDelete = []
   removedClicked(tagText)
   if (tagClass === 'ingredients-tag') {
     currentTag.ingredients.splice(currentTag.ingredients.indexOf(tagText), 1)
@@ -75,7 +50,7 @@ function deleteTag(closeButton) {
   advancedSearch(currentTag)
 }
 
-// function to remove clicked class
+// function to remove clicked class, clicked class is use to prevent several click on the same suggestion item
 function removedClicked(text) {
   let clickedSuggestion = document.getElementsByClassName('clicked')
   for (i = 0; i < clickedSuggestion.length; i++) {
@@ -85,25 +60,19 @@ function removedClicked(text) {
   }
 }
 
-// Event to delete tag
-researchTagSection[0].addEventListener('click', (e) => {
-  if (e.target.classList[1] === 'fa-circle-xmark') {
-    deleteTag(e.target)
-  }
-})
 // Event to create tag when user click on one item of the suggestion list
 ;['click', 'keydown'].forEach((action) => {
-  ;[testUlDivIngredient[0], testUlDivAppareils[0], testUlDivUstensils[0]].forEach((suggestionDiv) => {
+  ;[suggestionDivIngredient[0], suggestionDivAppareils[0], suggestionDivUstensils[0]].forEach((suggestionDiv) => {
     suggestionDiv.addEventListener(action, (e) => {
       if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
         if (e.target.classList[0] !== 'suggestion') {
           if (e.target.classList[0] !== 'clicked') {
             e.target.classList.add('clicked')
-            if (suggestionDiv === testUlDivIngredient[0]) {
+            if (suggestionDiv === suggestionDivIngredient[0]) {
               createResearchTag('ingredients-tag', e.target.textContent)
-            } else if (suggestionDiv === testUlDivAppareils[0]) {
+            } else if (suggestionDiv === suggestionDivAppareils[0]) {
               createResearchTag('appareils-tag', e.target.textContent)
-            } else if (suggestionDiv === testUlDivUstensils[0]) {
+            } else if (suggestionDiv === suggestionDivUstensils[0]) {
               createResearchTag('ustensils-tag', e.target.textContent)
             }
           }
@@ -113,51 +82,25 @@ researchTagSection[0].addEventListener('click', (e) => {
   })
 })
 
-function displaySuggestion(array, type) {
-  for (let element of array) {
-    const newItem = document.createElement('li')
-    newItem.setAttribute('tabindex', '0')
-    newItem.textContent = element
-    if (type === 'ingredient') {
-      ingredientsSuggestion[0].appendChild(newItem)
-    }
-    if (type === 'appareil') {
-      appareilsSuggestion[0].appendChild(newItem)
-    }
-    if (type === 'ustensil') {
-      ustensilsSuggestion[0].appendChild(newItem)
-    }
+// Event to delete tag
+researchTagSection[0].addEventListener('click', (e) => {
+  if (e.target.classList[1] === 'fa-circle-xmark') {
+    deleteTag(e.target)
   }
-}
-
-// e.target avec id adaptatif c'est une meilleurs pratique que de faire des tableau d'objet
-// plutôt faire une fonction toggle pour passer de active, inactive
-// Event to display suggestion when user focus one advanced search input
-
-dropdownClose[0].addEventListener('click', (e) => {
-  dropdownClose[0].classList.toggle('hide')
-  dropdownOpen[0].classList.toggle('hide')
 })
 
-dropdownOpen[0].addEventListener('click', (e) => {
-  dropdownClose[0].classList.toggle('hide')
-  dropdownOpen[0].classList.toggle('hide')
-})
-dropdownClose[1].addEventListener('click', (e) => {
-  dropdownClose[1].classList.toggle('hide')
-  dropdownOpen[1].classList.toggle('hide')
-})
-
-dropdownOpen[1].addEventListener('click', (e) => {
-  dropdownClose[1].classList.toggle('hide')
-  dropdownOpen[1].classList.toggle('hide')
-})
-dropdownClose[2].addEventListener('click', (e) => {
-  dropdownClose[2].classList.toggle('hide')
-  dropdownOpen[2].classList.toggle('hide')
-})
-
-dropdownOpen[2].addEventListener('click', (e) => {
-  dropdownClose[2].classList.toggle('hide')
-  dropdownOpen[2].classList.toggle('hide')
+// Event to show hide suggestion
+;[0, 1, 2].forEach((index) => {
+  dropdownClose[index].addEventListener('click', (e) => {
+    dropdownClose[index].classList.toggle('hide')
+    dropdownOpen[index].classList.toggle('hide')
+  })
+  chevronDown[index].addEventListener('click', (e) => {
+    dropdownClose[index].classList.toggle('hide')
+    dropdownOpen[index].classList.toggle('hide')
+  })
+  suggestionContainer[index].addEventListener('click', (e) => {
+    dropdownClose[index].classList.toggle('hide')
+    dropdownOpen[index].classList.toggle('hide')
+  })
 })
