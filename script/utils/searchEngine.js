@@ -21,63 +21,6 @@ function getListOfUnique(array) {
   return newArray
 }
 
-// function that give the list of unique ingredient within the array
-// let listUniqueIngredients = []
-// function getListIngredients(array) {
-//   const listAllIngredients = []
-//   listUniqueIngredients = []
-//   for (let element of array) {
-//     for (let ingredient of element.ingredients) {
-//       listAllIngredients.push(ingredient.ingredient.toLowerCase())
-//     }
-//   }
-//   listUniqueIngredients = getListOfUnique(listAllIngredients)
-//   displaySuggestion(listUniqueIngredients, 'ingredient')
-//   return listUniqueIngredients
-// }
-// function that give the list of unique appareils within the array
-// let listUniqueAppareils = []
-// function getListAppareils(array) {
-//   const listAllAppareils = []
-//   for (let element of array) {
-//     listAllAppareils.push(element.appliance.toLowerCase())
-//   }
-//   listUniqueAppareils = getListOfUnique(listAllAppareils)
-//   displaySuggestion(listUniqueAppareils, 'appareil')
-//   return listUniqueAppareils
-// }
-// function that give the list of unique ustensils within the array
-// let listUniqueUstensils = []
-// function getListUstensils(array) {
-//   let listAllUstensils = []
-//   for (let element of array) {
-//     for (let ustensil of element.ustensils) {
-//       listAllUstensils.push(ustensil.toLowerCase())
-//     }
-//   }
-//   listUniqueUstensils = getListOfUnique(listAllUstensils)
-//   displaySuggestion(listUniqueUstensils, 'ustensil')
-//   return listUniqueUstensils
-// }
-
-// function to display list of suggestion in the related fields
-function displaySuggestion(array, type) {
-  for (let element of array) {
-    const newItem = document.createElement('li')
-    newItem.setAttribute('tabindex', '0')
-    newItem.textContent = element
-    if (type === 'ingredient') {
-      ingredientsSuggestion[0].appendChild(newItem)
-    }
-    if (type === 'appareil') {
-      appareilsSuggestion[0].appendChild(newItem)
-    }
-    if (type === 'ustensil') {
-      ustensilsSuggestion[0].appendChild(newItem)
-    }
-  }
-}
-
 // function that give the list of unique Ingredient, Appareils and Ustensils within an array and display it in the related suggestion field
 let listUniqueAppareils = []
 let listUniqueIngredients = []
@@ -131,101 +74,40 @@ function mainSearch(input, array) {
       }
     }
   }
-  recipesSection[0].innerHTML = ''
-  ingredientsSuggestion[0].innerHTML = ''
-  appareilsSuggestion[0].innerHTML = ''
-  ustensilsSuggestion[0].innerHTML = ''
   displayRecipes(currentRecipes)
   getSuggestionList(currentRecipes)
+  hiddingSuggestion()
+  if (currentRecipes.length === 0) {
+    let error = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc'
+    console.log('coucou')
+    let p = document.createElement('p')
+    p.textContent = error
+    recipesSection[0].innerHTML = ''
+    console.log(recipesSection[0])
+    recipesSection[0].appendChild(p)
+  }
   return currentRecipes
 }
 
-// function advancedSearch(tag) {
-//   let currentRecipes = mainSearch(mainSearchInput, recipes)
-//   let advancedRecipesAppareils = []
-//   let advancedRecipesIngredients = []
-//   let advancedRecipesUstensils = []
-//   if (tag.appareils.length > 1) {
-//     recipesSection[0].innerHTML = 'aucune recette ne correspond à votre recherche'
-//   } else {
-//     if (tag.appareils.length === 0) {
-//       advancedRecipesAppareils = currentRecipes
-//     } else {
-//       for (let recipe of currentRecipes) {
-//         if (tag.appareils[0] === recipe.appliance.toLowerCase()) {
-//           advancedRecipesAppareils.push(recipe)
-//         }
-//       }
-//     }
-//     if (tag.ingredients.length === 0) {
-//       advancedRecipesIngredients = advancedRecipesAppareils
-//     } else {
-//       for (let ingredient of tag.ingredients) {
-//         advancedRecipesIngredients = []
-//         for (let recipe of advancedRecipesAppareils) {
-//           for (let i = 0; i < recipe.ingredients.length; i++) {
-//             if (ingredient === recipe.ingredients[i].ingredient.toLowerCase()) {
-//               advancedRecipesIngredients.push(recipe)
-//             }
-//           }
-//         }
-//         advancedRecipesAppareils = advancedRecipesIngredients
-//       }
-//     }
-//     if (tag.ustensils.length === 0) {
-//       advancedRecipesUstensils = advancedRecipesIngredients
-//     } else {
-//       for (let ustensil of tag.ustensils) {
-//         advancedRecipesUstensils = []
-//         for (let recipe of advancedRecipesIngredients) {
-//           for (i = 0; i < recipe.ustensils.length; i++) {
-//             if (ustensil === recipe.ustensils[i].toLowerCase()) {
-//               advancedRecipesUstensils.push(recipe)
-//             }
-//           }
-//         }
-//         advancedRecipesIngredients = advancedRecipesUstensils
-//       }
-//     }
-//   }
-//   recipesSection[0].innerHTML = ''
-//   ingredientsSuggestion[0].innerHTML = ''
-//   appareilsSuggestion[0].innerHTML = ''
-//   ustensilsSuggestion[0].innerHTML = ''
-//   getSuggestionList(advancedRecipesUstensils)
-//   if (advancedRecipesUstensils.length === 0) {
-//     recipesSection[0].innerHTML = 'aucune recette ne correspond à votre recherche'
-//   } else {
-//     displayRecipes(advancedRecipesUstensils)
-//   }
-// }
-
-// VERSION ALTERNATIVE de advancedSearch(tag)
-function getMatchingRecipe(arrayToTest, matchingRecipes, previousMatchingRecipes, recipeProperty) {
+function getMatchingRecipe(arrayToTest, previousMatchingRecipes, recipeProperty) {
   for (let element of arrayToTest) {
-    console.log('coucou getMatching Recipes')
-    matchingRecipes = []
+    newArray = []
     for (let recipe of previousMatchingRecipes) {
       for (let i = 0; i < recipe[recipeProperty].length; i++) {
         if (recipeProperty === 'ingredients') {
           if (element === recipe[recipeProperty][i].ingredient.toLowerCase()) {
-            matchingRecipes.push(recipe)
+            newArray.push(recipe)
           }
         } else {
           if (element === recipe[recipeProperty][i].toLowerCase()) {
-            matchingRecipes.push(recipe)
+            newArray.push(recipe)
           }
         }
       }
     }
-    previousMatchingRecipes = matchingRecipes
-    // if (arrayToTest.length === 1) {
-    //   console.log('coucou break getmatchingrecipes')
-    //   break
-    //}
+    previousMatchingRecipes = newArray
   }
-  console.log(matchingRecipes)
-  return matchingRecipes
+  return newArray
 }
 
 function advancedSearch(tag) {
@@ -233,92 +115,28 @@ function advancedSearch(tag) {
   let advancedRecipesAppareils = []
   let advancedRecipesIngredients = []
   let advancedRecipesUstensils = []
-  if (tag.appareils.length > 1) {
-    recipesSection[0].innerHTML = 'aucune recette ne correspond à votre recherche'
+  if (tag.appareils.length === 0) {
+    advancedRecipesAppareils = currentRecipes
   } else {
-    if (tag.appareils.length === 0) {
-      advancedRecipesAppareils = currentRecipes
-    } else {
-      for (let recipe of currentRecipes) {
-        if (tag.appareils[0] === recipe.appliance.toLowerCase()) {
-          advancedRecipesAppareils.push(recipe)
-        }
+    for (let recipe of currentRecipes) {
+      if (tag.appareils[0] === recipe.appliance.toLowerCase()) {
+        advancedRecipesAppareils.push(recipe)
       }
     }
-    if (tag.ingredients.length === 0) {
-      advancedRecipesIngredients = advancedRecipesAppareils
-    } else {
-      console.log('coucou ingredient')
-      console.log(getMatchingRecipe(tag.ingredients, advancedRecipesIngredients, advancedRecipesAppareils, 'ingredients'))
-      getMatchingRecipe(tag.ingredients, advancedRecipesIngredients, advancedRecipesAppareils, 'ingredients')
-      console.log(advancedRecipesIngredients)
-    }
-    if (tag.ustensils.length === 0) {
-      console.log("coucou pas d'ustensil dans les tag")
-      advancedRecipesUstensils = advancedRecipesIngredients
-    } else {
-      console.log('coucou ustensils')
-      getMatchingRecipe(tag.ustensils, advancedRecipesUstensils, advancedRecipesIngredients, 'ustensils')
-    }
   }
-  console.log(advancedRecipesUstensils)
-  recipesSection[0].innerHTML = ''
-  ingredientsSuggestion[0].innerHTML = ''
-  appareilsSuggestion[0].innerHTML = ''
-  ustensilsSuggestion[0].innerHTML = ''
-  getSuggestionList(advancedRecipesUstensils)
-  if (advancedRecipesUstensils.length === 0) {
-    recipesSection[0].innerHTML = 'aucune recette ne correspond à votre recherche'
+  if (tag.ingredients.length === 0) {
+    advancedRecipesIngredients = advancedRecipesAppareils
   } else {
-    displayRecipes(advancedRecipesUstensils)
+    advancedRecipesIngredients = getMatchingRecipe(tag.ingredients, advancedRecipesAppareils, 'ingredients')
   }
+  if (tag.ustensils.length === 0) {
+    advancedRecipesUstensils = advancedRecipesIngredients
+  } else {
+    advancedRecipesUstensils = getMatchingRecipe(tag.ustensils, advancedRecipesIngredients, 'ustensils')
+  }
+  getSuggestionList(advancedRecipesUstensils)
+  displayRecipes(advancedRecipesUstensils)
 }
-
-// VERSION ALTERNATIVE de advancedSearchTag
-// function advancedSearchTag(input) {
-//   const currentAdvancedSearch = input.value.toLowerCase()
-//   let currentSuggestion = []
-//   if (input === ingredientsInput) {
-//     for (let ingredient of listUniqueIngredients) {
-//       if (ingredient.toLowerCase().includes(currentAdvancedSearch)) {
-//         currentSuggestion.push(ingredient)
-//       }
-//     }
-//     ingredientsSuggestion[0].innerHTML = ''
-//     if (currentSuggestion.length === 0) {
-//       ingredientsSuggestion[0].innerHTML = 'Aucune suggestion ne correspond à votre recherche'
-//     }
-//     displaySuggestion(currentSuggestion, 'ingredient')
-//   } else if (input === appareilsInput) {
-//     for (let appareil of listUniqueAppareils) {
-//       if (appareil.toLowerCase().includes(currentAdvancedSearch)) {
-//         currentSuggestion.push(appareil)
-//       }
-//     }
-//     appareilsSuggestion[0].innerHTML = ''
-//     if (currentSuggestion.length === 0) {
-//       appareilsSuggestion[0].innerHTML = 'Aucune suggestion ne correspond à votre recherche'
-//     }
-//     displaySuggestion(currentSuggestion, 'appareil')
-//   } else if (input === ustensilsInput) {
-//     for (let ustensil of listUniqueUstensils) {
-//       if (ustensil.toLowerCase().includes(currentAdvancedSearch)) {
-//         currentSuggestion.push(ustensi)
-//       }
-//     }
-//     ustensilsSuggestion[0].innerHTML = ''
-//     if (currentSuggestion.length === 0) {
-//       ustensilsSuggestion[0].innerHTML = 'Aucune suggestion ne correspond à votre recherche'
-//     }
-//     displaySuggestion(currentSuggestion, 'appareil')
-//   }
-// }
-
-// myAdvancedInput.forEach((input) => {
-//   input.addEventListener('keyup', (e) => {
-//     advancedSearchTag(input)
-//   })
-// })
 
 function advancedSearchTag(input, array, DOM, type) {
   const currentAdvancedSearch = input.value.toLowerCase()
@@ -335,6 +153,7 @@ function advancedSearchTag(input, array, DOM, type) {
   displaySuggestion(currentSuggestion, type)
 }
 
+// Event listener
 mainSearchInput.addEventListener('keyup', (e) => {
   mainSearch(mainSearchInput, recipes)
 })

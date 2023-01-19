@@ -8,6 +8,54 @@ const chevronDown = document.getElementsByClassName('fa-chevron-down')
 const suggestionContainer = document.getElementsByClassName('suggestion-container')
 const researchTagSection = document.getElementsByClassName('research-tag')
 
+// function allowing to hide current tag shown from their respective suggestion list
+function hiddingSuggestion() {
+  let tagArray = Array.from(researchTagSection[0].children)
+  if (tagArray.length > 0) {
+    tagArray.forEach((tag) => {
+      if (tag.classList[0] === 'ingredients-tag') {
+        listUniqueIngredients.splice(listUniqueIngredients.indexOf(tag.children[0].textContent), 1)
+      }
+      if (tag.classList[0] === 'appareils-tag') {
+        listUniqueAppareils.splice(listUniqueAppareils.indexOf(tag.children[0].textContent), 1)
+      }
+      if (tag.classList[0] === 'ustensils-tag') {
+        listUniqueUstensils.splice(listUniqueUstensils.indexOf(tag.children[0].textContent), 1)
+      }
+    })
+    displaySuggestion(listUniqueIngredients, 'ingredient')
+    displaySuggestion(listUniqueUstensils, 'ustensil')
+    displaySuggestion(listUniqueAppareils, 'appareil')
+  }
+}
+
+// function to display list of suggestion in the related fields
+function displaySuggestion(array, type) {
+  if (type === 'ingredient') {
+    ingredientsSuggestion[0].innerHTML = ''
+  }
+  if (type === 'appareil') {
+    appareilsSuggestion[0].innerHTML = ''
+  }
+  if (type === 'ustensil') {
+    ustensilsSuggestion[0].innerHTML = ''
+  }
+  for (let element of array) {
+    const newItem = document.createElement('li')
+    newItem.setAttribute('tabindex', '0')
+    newItem.textContent = element
+    if (type === 'ingredient') {
+      ingredientsSuggestion[0].appendChild(newItem)
+    }
+    if (type === 'appareil') {
+      appareilsSuggestion[0].appendChild(newItem)
+    }
+    if (type === 'ustensil') {
+      ustensilsSuggestion[0].appendChild(newItem)
+    }
+  }
+}
+
 let currentTag = {
   ingredients: [],
   appareils: [],
@@ -32,13 +80,15 @@ function createResearchTag(tagClass, suggestion) {
     currentTag.ustensils.push(suggestion)
   }
   advancedSearch(currentTag)
+  hiddingSuggestion()
+
+  // voir pour faire des impor export ou des module (chercher doc et comment ca marche)
 }
 // function to delete tag and delete tag.textcontent from array (currentTag)
 function deleteTag(closeButton) {
   const tag = closeButton.parentNode
   const tagText = tag.children[0].textContent
   const tagClass = tag.classList[0]
-  removedClicked(tagText)
   if (tagClass === 'ingredients-tag') {
     currentTag.ingredients.splice(currentTag.ingredients.indexOf(tagText), 1)
   } else if (tagClass === 'appareils-tag') {
@@ -48,16 +98,7 @@ function deleteTag(closeButton) {
   }
   tag.remove()
   advancedSearch(currentTag)
-}
-
-// function to remove clicked class, clicked class is use to prevent several click on the same suggestion item
-function removedClicked(text) {
-  let clickedSuggestion = document.getElementsByClassName('clicked')
-  for (i = 0; i < clickedSuggestion.length; i++) {
-    if (clickedSuggestion[i].textContent === text) {
-      clickedSuggestion[i].classList.remove('clicked')
-    }
-  }
+  hidingSuggestion()
 }
 
 // Event to create tag when user click on one item of the suggestion list
@@ -66,15 +107,12 @@ function removedClicked(text) {
     suggestionDiv.addEventListener(action, (e) => {
       if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
         if (e.target.classList[0] !== 'suggestion') {
-          if (e.target.classList[0] !== 'clicked') {
-            e.target.classList.add('clicked')
-            if (suggestionDiv === suggestionDivIngredient[0]) {
-              createResearchTag('ingredients-tag', e.target.textContent)
-            } else if (suggestionDiv === suggestionDivAppareils[0]) {
-              createResearchTag('appareils-tag', e.target.textContent)
-            } else if (suggestionDiv === suggestionDivUstensils[0]) {
-              createResearchTag('ustensils-tag', e.target.textContent)
-            }
+          if (suggestionDiv === suggestionDivIngredient[0]) {
+            createResearchTag('ingredients-tag', e.target.textContent)
+          } else if (suggestionDiv === suggestionDivAppareils[0]) {
+            createResearchTag('appareils-tag', e.target.textContent)
+          } else if (suggestionDiv === suggestionDivUstensils[0]) {
+            createResearchTag('ustensils-tag', e.target.textContent)
           }
         }
       }
