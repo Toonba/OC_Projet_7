@@ -1,12 +1,10 @@
 // DOM
 const dropdownClose = document.getElementsByClassName('dropdown-close')
 const dropdownOpen = document.getElementsByClassName('dropdown-open')
-const suggestionDivIngredient = document.getElementsByClassName('suggestion-ingredients')
-const suggestionDivAppareils = document.getElementsByClassName('suggestion-appareils')
-const suggestionDivUstensils = document.getElementsByClassName('suggestion-ustensils')
 const chevronDown = document.getElementsByClassName('fa-chevron-down')
 const suggestionContainer = document.getElementsByClassName('suggestion-container')
 const researchTagSection = document.getElementsByClassName('research-tag')
+const all3suggestion = document.getElementsByClassName('suggestion')
 
 // function allowing to hide current tag shown from their respective suggestion list
 function hiddingSuggestion() {
@@ -31,14 +29,23 @@ function hiddingSuggestion() {
 
 // function to display list of suggestion in the related fields
 function displaySuggestion(array, type) {
+  let suggestionHeight = 35 + (array.length / 3) * 40
   if (type === 'ingredient') {
     ingredientsSuggestion[0].innerHTML = ''
+    if (array.length > 30) {
+      ingredientsSuggestion[0].style.height = '440px'
+      ingredientsSuggestion[0].classList.remove('suggestionWithout')
+    } else {
+      ingredientsSuggestion[0].style.height = `${suggestionHeight}px`
+    }
   }
   if (type === 'appareil') {
     appareilsSuggestion[0].innerHTML = ''
+    appareilsSuggestion[0].style.height = `${suggestionHeight}px`
   }
   if (type === 'ustensil') {
     ustensilsSuggestion[0].innerHTML = ''
+    ustensilsSuggestion[0].style.height = `${suggestionHeight}px`
   }
   for (let element of array) {
     const newItem = document.createElement('li')
@@ -98,20 +105,20 @@ function deleteTag(closeButton) {
   }
   tag.remove()
   advancedSearch(currentTag)
-  hidingSuggestion()
+  hiddingSuggestion()
 }
 
 // Event to create tag when user click on one item of the suggestion list
 ;['click', 'keydown'].forEach((action) => {
-  ;[suggestionDivIngredient[0], suggestionDivAppareils[0], suggestionDivUstensils[0]].forEach((suggestionDiv) => {
+  ;[ingredientsSuggestion[0], appareilsSuggestion[0], ustensilsSuggestion[0]].forEach((suggestionDiv) => {
     suggestionDiv.addEventListener(action, (e) => {
       if ((action === 'keydown' && e.key === 'Enter') || action === 'click') {
         if (e.target.classList[0] !== 'suggestion') {
-          if (suggestionDiv === suggestionDivIngredient[0]) {
+          if (suggestionDiv === ingredientsSuggestion[0]) {
             createResearchTag('ingredients-tag', e.target.textContent)
-          } else if (suggestionDiv === suggestionDivAppareils[0]) {
+          } else if (suggestionDiv === appareilsSuggestion[0]) {
             createResearchTag('appareils-tag', e.target.textContent)
-          } else if (suggestionDiv === suggestionDivUstensils[0]) {
+          } else if (suggestionDiv === ustensilsSuggestion[0]) {
             createResearchTag('ustensils-tag', e.target.textContent)
           }
         }
