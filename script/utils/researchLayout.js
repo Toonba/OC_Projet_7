@@ -83,9 +83,8 @@ function createResearchTag(tagClass, suggestion) {
   }
   advancedSearch(currentTag)
   hiddingSuggestion()
-
-  // voir pour faire des impor export ou des module (chercher doc et comment ca marche)
 }
+
 // function to delete tag and delete tag.textcontent from array (currentTag)
 function deleteTag(closeButton) {
   const tag = closeButton.parentNode
