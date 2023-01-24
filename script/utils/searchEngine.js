@@ -49,13 +49,12 @@ function getSuggestionList(array) {
   displaySuggestion(listUniqueAppareils, 'appareil')
 }
 
+// main search function allowing user to find a recipes for which is input is either contained in title, description or ingredient
 function mainSearch(input, array) {
-  let currentSearch = ''
-  let currentRecipes = []
-  if (input.value.length < 3) {
-    currentRecipes = recipes
-  } else if (input.value.length >= 3) {
-    currentSearch = input.value.toLowerCase()
+  let currentRecipes = array
+  const currentSearch = input.value.toLowerCase()
+  if (input.value.length >= 3) {
+    currentRecipes = []
     for (let i = 0; i < array.length; i++) {
       if (array[i].name.toLowerCase().includes(currentSearch)) {
         currentRecipes.push(array[i])
@@ -66,10 +65,11 @@ function mainSearch(input, array) {
           .includes(currentSearch)
       ) {
         currentRecipes.push(array[i])
-      }
-      for (let j = 0; j < array[i].ingredients[j].length; j++) {
-        if (array[i].ingredients[j].ingredient.toLowerCase().includes(currentSearch)) {
-          currentRecipes.push(array[i])
+      } else {
+        for (let j = 0; j < array[i].ingredients[j].length; j++) {
+          if (array[i].ingredients[j].ingredient.toLowerCase().includes(currentSearch)) {
+            currentRecipes.push(array[i])
+          }
         }
       }
     }
@@ -89,6 +89,8 @@ function mainSearch(input, array) {
   return currentRecipes
 }
 
+// Function that return an array of recipes matching specific parameters
+// arrayToTest is either an array of ingredient or ustensils, previousMatchingRecipes is the array of recipes in which we want to check, and recipeProperty is either ingredient or ustenils.
 function getMatchingRecipe(arrayToTest, previousMatchingRecipes, recipeProperty) {
   for (let element of arrayToTest) {
     newArray = []
@@ -110,6 +112,7 @@ function getMatchingRecipe(arrayToTest, previousMatchingRecipes, recipeProperty)
   return newArray
 }
 
+// Function that return an array of recipes matching the tag that user choose, the matching recipes are an intersection of all tag meaning that recipes must contain all the tag.
 function advancedSearch(tag) {
   let currentRecipes = mainSearch(mainSearchInput, recipes)
   let advancedRecipesAppareils = []
@@ -138,6 +141,7 @@ function advancedSearch(tag) {
   displayRecipes(advancedRecipesUstensils)
 }
 
+// function that allow user to find tag by typing in the advanced searchbar
 function advancedSearchTag(input, array, DOM, type) {
   const currentAdvancedSearch = input.value.toLowerCase()
   let currentSuggestion = []
