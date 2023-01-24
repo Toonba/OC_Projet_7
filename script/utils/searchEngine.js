@@ -1,15 +1,3 @@
-// conseil de chatGPT pour améliorer mon code
-
-// Séparer les fonctions logiques dans des fichiers séparés : pour cela tu peux créer un nouveau fichier pour chaque fonction logique (par exemple, un fichier mainSearch.js pour la fonction mainSearch) et y déplacer le code de cette fonction. Ensuite, dans le fichier principal (searchEngine.js), tu peux importer ces fonctions à l'aide de l'instruction import de JavaScript.
-
-// Utiliser des noms de variables plus explicites : tu peux changer les noms de variables pour qu'ils soient plus explicites (par exemple, recipesArray pour remplacer array dans la fonction mainSearch).
-
-// Utiliser des commentaires pour expliquer le code : tu peux ajouter des commentaires pour expliquer ce que font les différentes parties de ton code. Il est important de les mettre à des endroits pertinents pour que les personnes qui lisent ton code puissent comprendre ce que tu essaies de faire.
-
-// Utiliser des constantes plutôt que des variables pour les éléments du DOM : tu peux remplacer toutes les variables qui stockent des éléments du DOM par des constantes, pour éviter les erreurs potentielles.
-
-// Utiliser des fonctions pour répéter des actions similaires : tu peux créer une fonction displaySuggestion pour afficher les suggestions pour les ingrédients, les appareils et les ustensiles. Cette fonction prend en paramètre les données à afficher et le type de suggestion (ingrédients, appareils ou ustensiles) et se charge de l'affichage.
-
 // DOM Element
 const mainSearchInput = document.getElementById('search')
 const recipesSection = document.getElementsByClassName('recipes-gallery')
