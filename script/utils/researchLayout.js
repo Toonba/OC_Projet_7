@@ -30,37 +30,33 @@ function hiddingSuggestion() {
 // function to display list of suggestion in the related fields
 function displaySuggestion(array, type) {
   let suggestionHeight = 35 + (array.length / 3) * 40
-  if (type === 'ingredient') {
-    ingredientsSuggestion[0].innerHTML = ''
-    if (array.length > 30) {
-      ingredientsSuggestion[0].style.height = '440px'
-      ingredientsSuggestion[0].classList.remove('suggestionWithout')
-    } else {
-      ingredientsSuggestion[0].style.height = `${suggestionHeight}px`
-    }
+  let suggestionElement
+  switch (type) {
+    case 'ingredient':
+      suggestionElement = ingredientsSuggestion
+      break
+    case 'appareil':
+      suggestionElement = appareilsSuggestion
+      break
+    case 'ustensil':
+      suggestionElement = ustensilsSuggestion
+      break
+    default:
+      throw new Error('Invalid suggestion type')
   }
-  if (type === 'appareil') {
-    appareilsSuggestion[0].innerHTML = ''
-    appareilsSuggestion[0].style.height = `${suggestionHeight}px`
+  suggestionElement[0].innerHTML = ''
+  if (type === 'ingredient' && array.length > 30) {
+    suggestionElement[0].style.height = '440px'
+    suggestionElement[0].classList.remove('suggestionWithout')
+  } else {
+    suggestionElement[0].style.height = `${suggestionHeight}px`
   }
-  if (type === 'ustensil') {
-    ustensilsSuggestion[0].innerHTML = ''
-    ustensilsSuggestion[0].style.height = `${suggestionHeight}px`
-  }
-  for (let element of array) {
+  array.forEach((element) => {
     const newItem = document.createElement('li')
     newItem.setAttribute('tabindex', '0')
     newItem.textContent = element
-    if (type === 'ingredient') {
-      ingredientsSuggestion[0].appendChild(newItem)
-    }
-    if (type === 'appareil') {
-      appareilsSuggestion[0].appendChild(newItem)
-    }
-    if (type === 'ustensil') {
-      ustensilsSuggestion[0].appendChild(newItem)
-    }
-  }
+    suggestionElement[0].appendChild(newItem)
+  })
 }
 
 let currentTag = {
