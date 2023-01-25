@@ -79,11 +79,9 @@ function mainSearch(input, array) {
   hiddingSuggestion()
   if (currentRecipes.length === 0) {
     let error = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc'
-    console.log('coucou')
     let p = document.createElement('p')
     p.textContent = error
     recipesSection[0].innerHTML = ''
-    console.log(recipesSection[0])
     recipesSection[0].appendChild(p)
   }
   return currentRecipes
