@@ -76,7 +76,6 @@ function mainSearch(input, array) {
   }
   displayRecipes(currentRecipes);
   getSuggestionList(currentRecipes);
-  hiddingSuggestion();
   if (currentRecipes.length === 0) {
     let error = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc';
     let p = document.createElement('p');
@@ -150,9 +149,6 @@ function advancedSearchTag(input, array, DOM, type) {
   }
   console.log(currentSuggestion);
   DOM.innerHTML = '';
-  if (currentSuggestion.length === 0) {
-    DOM.innerHTML = 'Aucune suggestion ne correspond à votre recherche';
-  }
   displaySuggestion(currentSuggestion, type);
 }
 
