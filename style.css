@@ -274,3 +274,17 @@ input[type='search']::-webkit-search-cancel-button {
   margin: 0;
   height: 67.5px;
 }
+
+@media all and (max-width: 950px) {
+  .recipe {
+    width: 45%;
+    margin: 0 auto;
+  }
+  .ingredients-list {
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    height: 67.5px;
+  }
+}

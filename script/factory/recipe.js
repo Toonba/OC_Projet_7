@@ -52,4 +52,3 @@ function recipeFactory(data) {
     getRecipeCardDOM
   }
 }
-
