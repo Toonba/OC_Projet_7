@@ -49,6 +49,14 @@ function getSuggestionList(array) {
   displaySuggestion(listUniqueAppareils, 'appareil')
 }
 
+function nothingFound() {
+  let error = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc'
+  let p = document.createElement('p')
+  p.textContent = error
+  recipesSection[0].innerHTML = ''
+  recipesSection[0].appendChild(p)
+}
+
 // main search function allowing user to find a recipes for which is input is either contained in title, description or ingredient
 function mainSearch(input, array) {
   let currentRecipes = array
@@ -77,12 +85,9 @@ function mainSearch(input, array) {
   displayRecipes(currentRecipes)
   getSuggestionList(currentRecipes)
   if (currentRecipes.length === 0) {
-    let error = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc'
-    let p = document.createElement('p')
-    p.textContent = error
-    recipesSection[0].innerHTML = ''
-    recipesSection[0].appendChild(p)
+    nothingFound()
   }
+
   return currentRecipes
 }
 
@@ -136,6 +141,9 @@ function advancedSearch(tag) {
   }
   getSuggestionList(advancedRecipesUstensils)
   displayRecipes(advancedRecipesUstensils)
+  if (advancedRecipesUstensils.length === 0) {
+    nothingFound()
+  }
 }
 
 // function that allow user to find tag by typing in the advanced searchbar
@@ -153,6 +161,7 @@ function advancedSearchTag(input, array, type) {
 // Event listener
 mainSearchInput.addEventListener('keyup', (e) => {
   mainSearch(mainSearchInput, recipes)
+  advancedSearch(currentTag)
 })
 
 myAdvancedInput.forEach((input) => {
